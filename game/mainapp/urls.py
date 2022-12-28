@@ -20,5 +20,9 @@ urlpatterns = [
     path('api/store-money/', views.StoreAPI.as_view()),
 
     path('api/havingitem/', views.HavingItemAPI.as_view()),
+    path('result', views.result),
+    path('room/', views.find_room),
+    path('room/wait/<str:room_name>/', views.wait_room),
+    path('room/<str:room_name>/', views.pvp)
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
