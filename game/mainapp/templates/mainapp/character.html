@@ -12,6 +12,7 @@
     let wearingData
     let userID
     let itemID
+    let itemName
     let data = {
         name: 'Rex',
         helmet:[                
@@ -991,6 +992,7 @@
                     itemID = data[category][i].id
                 }
             }
+            hair.setTexture(`${itemName}`)
         })
 
     selectui.on('pointerdown', function(event){
