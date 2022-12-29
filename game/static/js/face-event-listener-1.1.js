@@ -132,21 +132,6 @@ video.addEventListener("play", () => {
     let y_df_eye_right_start = parseInt(test_y[44] - 2);
     let y_df_eye_right_end = 15; // 파라미터가 수정되었습니다 40 --> 35
     // 수정된 부분
-
-    // 수정된 부분
-    let x_df_eye_left_start = parseInt(test_x[36] - x_left);
-    let x_df_eye_left_end = 20;
-    // let x_df_eye_left_end = parseInt(test_x[39] + x_left) - x_df_eye_left_start
-
-    let y_df_eye_left_start = parseInt(test_y[38] - y_left);
-    let y_df_eye_left_end = 15; // 파라미터가 수정되었습니다 20 --> 40
-
-    let x_df_eye_right_start = parseInt(test_x[42] - x_right);
-    let x_df_eye_right_end = 20;
-
-    let y_df_eye_right_start = parseInt(test_y[44] - y_right);
-    let y_df_eye_right_end = 15; // 파라미터가 수정되었습니다 20 --> 40
-    // 수정된 부분
     
     // You can try more different parameters
     let rect_left = new cv.Rect(
@@ -183,12 +168,12 @@ video.addEventListener("play", () => {
     let right_count_check;
 
     // 수정된 부분
-    for (var i = 2; i <= 15; i++) { // 파라미터가 수정되었습니다 20, 40 --> 2, 15
+    for (var i = 3; i <= 15; i++) { // 파라미터가 수정되었습니다 20, 40 --> 2, 15
       if (Array.isArray(right_matrix[i])) {
         right_count_check = getElNum(right_matrix[i], 255);
       }
 
-      if (right_count_check <= 10) { // 값을 낮출수록 인식 기준이 하드해집니다
+      if (right_count_check <= 3) { // 값을 낮출수록 인식 기준이 하드해집니다
         // console.log('왼쪽 눈을 감음')
         right_count++;
       }
@@ -196,7 +181,7 @@ video.addEventListener("play", () => {
         left_count_check = getElNum(left_matrix[i], 255);
       }
 
-      if (left_count_check <= 10) { // 값을 낮출수록 인식 기준이 하드해집니다
+      if (left_count_check <= 3) { // 값을 낮출수록 인식 기준이 하드해집니다
         // console.log('오른쪽 눈을 감음')
         left_count++;
       }
