@@ -2,6 +2,7 @@
 {%load static%}
 {% block script %}
 <script src={% static 'js/window.js' %}></script>
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
     const COLOR_PRIMARY = 0xF5F5F5;
     const COLOR_LIGHT = 0xD0CCCC;
@@ -9,37 +10,49 @@
     let itemData
     let havingitemData
     let wearingData
+    let userID
+    let itemID
     let data = {
         name: 'Rex',
-        helmet:[                { name: 'A' },
-        { name: 'B' },
-        { name: 'C' },
-        { name: 'D' },
-        { name: 'E' },], hair:[                { name: 'A' },
-        { name: 'B' },
-        { name: 'C' },
-        { name: 'D' },
-        { name: 'E' },], top:[                { name: 'A' },
-        { name: 'B' },
-        { name: 'C' },
-        { name: 'D' },
-        { name: 'E' },], bottom:[                { name: 'A' },
-        { name: 'B' },
-        { name: 'C' },
-        { name: 'D' },
-        { name: 'E' },], shoe:[                { name: 'A' },
-        { name: 'B' },
-        { name: 'C' },
-        { name: 'D' },
-        { name: 'E' },], weapon:[                { name: 'A' },
-        { name: 'B' },
-        { name: 'C' },
-        { name: 'D' },
-        { name: 'E' },], shield:[                { name: 'A' },
-        { name: 'B' },
-        { name: 'C' },
-        { name: 'D' },
-        { name: 'E' },]
+        helmet:[                
+        { name: 'helmet1' },
+        { name: 'helmet2' },
+        { name: 'helmet3' },
+        { name: 'helmet4' },
+        { name: 'helmet5' },], 
+        hair:[                
+        { name: 'hair1' },
+        { name: 'hair2' },
+        { name: 'hair3' },
+        { name: 'hair4' },
+        { name: 'hair5' },], 
+        top:[                
+        { name: 'body1' },
+        { name: 'body2' },
+        { name: 'body3' },], 
+        bottom:[                
+        { name: 'leg_a21' },
+        { name: 'leg_a22' },
+        { name: 'leg_a23' },
+        { name: 'leg_a24' },], 
+        shoe:[                
+        { name: 'leg_a31' },
+        { name: 'leg_a32' },
+        { name: 'leg_a33' },
+        { name: 'leg_a34' },
+        { name: 'leg_a35' },], 
+        weapon:[                
+        { name: 'weapon1' },
+        { name: 'weapon2' },
+        { name: 'weapon3' },
+        { name: 'weapon4' },
+        { name: 'weapon5' },], 
+        shield:[                
+        { name: 'shield1' },
+        { name: 'shield2' },
+        { name: 'shield3' },
+        { name: 'shield4' },
+        { name: 'shield5' },]
     };
 
     function getKeyByValue(obj, value) {
@@ -119,8 +132,8 @@
             orientation: 'y',
             icon: 
             //scene.rexUI.add.roundRectangle(0, 0, iconWidth, iconHeight, 5, COLOR_LIGHT)
-            scene.add.image(0, 0, item.name).setScale(0.9),
-            text: scene.add.text(0, 0, item.name, {color:'black'}),
+            scene.add.image(0, 0, item.name).setScale(0.5),
+            //text: scene.add.text(0, 0, item.name, {color:'black'}),
             space: { icon: 3 }
         });
     
@@ -139,225 +152,257 @@
       //bgs
     this.load.image('bg', "{% static '/resource/ui//bg1.png'%}")
         
-        {% comment %} await fetch('/mainapp/api/item')
-            .then((response) => {
-                if(response.ok) {
-                return response.json();
-                }  
-                throw new Error('Network response was not ok.');
-            }).then((data) => {
-                console.log(JSON.stringify(data));
-            }).catch((error) => {
-                console.log(`error: ${error}`)
-            }).then((data)=>{
-                itemData=data
-            });
+    {% comment %} 
+    await fetch('/mainapp/api/item')
+        .then((response) => {
+            if(response.ok) {
+            return response.json();
+            }  
+            throw new Error('Network response was not ok.');
+        }).then((data) => {
+            console.log(JSON.stringify(data));
+            itemData=data;
+        }).catch((error) => {
+            console.log(`error: ${error}`)
+        }); 
 
-        await fetch('/mainapp/api/havingitem')
-            .then((response) => {
-                if(response.ok) {
-                return response.json();
-                }  
-                throw new Error('Network response was not ok.');
-            }).then((data) => {
-                console.log(JSON.stringify(data));
-            }).catch((error) => {
-                console.log(`error: ${error}`)
-            }).then((data)=>{
-                havingitemData=data
-            });
+    await fetch('/mainapp/api/havingitem')
+        .then((response) => {
+            if(response.ok) {
+            return response.json();
+            }  
+            throw new Error('Network response was not ok.');
+        }).then((data) => {
+            console.log(JSON.stringify(data));
+            havingItemData=data;
+        }).catch((error) => {
+            console.log(`error: ${error}`)
+        });
+
     
-        
-        await fetch('/mainapp/api/wearing')
-            .then((response) => {
-                if(response.ok) {
-                return response.json();
-                }  
-                throw new Error('Network response was not ok.');
-            }).then((data) => {
-                console.log(JSON.stringify(data));
-            }).catch((error) => {
-                console.log(`error: ${error}`)
-            }).then((data)=>{
-                wearingData=data
-            });
+    await fetch('/mainapp/api/wearing')
+        .then((response) => {
+            if(response.ok) {
+            return response.json();
+            }  
+            throw new Error('Network response was not ok.');
+        }).then((data) => {
+            console.log(JSON.stringify(data));
+            wearingData=data;
+        }).catch((error) => {
+            console.log(`error: ${error}`)
+        });
 
-            for(i=0; i<itemData.length; i++){
-                const item = itemData[i]
-                const havingitem = havingitemData[i]
-                if(item.type=='헬멧'){
-                    data['helmet'].push({id:item.id, name:item.name, img:item.images})
-                }
-                if(item.type=='머리'){
-                    data['hair'].push({id:item.id, name:item.name, img:item.images})
-                }
-                if(item.type=='상의'){
-                    data['top'].push({id:item.id, name:item.name, img:item.images})
-                }
-                if(item.type=='하의'){
-                    data['bottom'].push({id:item.id, name:item.name, img:item.images})
-                }
-                if(item.type=='신발'){
-                    data['shoe'].push({id:item.id, name:item.name, img:item.image})
-                }
-                if(item.type=='무기'){
-                    data['weapon'].push({id:item.id, name:item.name, img:item.image})
-                }
-                if(item.type=='방패'){
-                    data['shield'].push({id:item.id, name:item.name, img:item.image})
-                }
-            }
-            
-            for(i=0; i<data.helmet.length; i++){
-                this.load.image(`헬멧${i+1}`, data.helmet[i].img[0].image)
-            }
-            for(i=0; i<data.hair.length; i++){
-                this.load.image(`헤어${i+1}`, data.hair[i].img[0].image)
-            }
-            for(i=0; i<data.top.length; i++){
-                this.load.image(`상의${i+1}`, data.top[i].img[0].image)
-            }
-            for(i=0; i<data.bottom.length; i++){
-                this.load.image(`하의${i+1}`, data.bottom[i].img[0].image)
-            }
-            for(i=0; i<data.shoe.length; i++){
-                this.load.image(`신발${i+1}`, data.shoe[i].img[0].image)
-            }
-            for(i=0; i<data.weapon.length; i++){
-                this.load.image(`무기${i+1}`, data.weapon[i].img[0].image)
-            }
-            for(i=0; i<data.shield.length; i++){
-                this.load.image(`방패${i+1}`, data.shield[i].img[0].image)
-            } {% endcomment %}
+    for(i=0; i<itemData.length; i++){
+        const item = itemData[i]
+        //왜 이 친구만 문제인지 모르겠어요
+        //const havingitem = havingitemData[i]
+        const wearing = wearingData[i]
+        if(item.type=='헬멧'){
+            data['helmet'].push({id:item.id, name:item.name, img:item.images})
+        }
+        if(item.type=='머리'){
+            data['hair'].push({id:item.id, name:item.name, img:item.images})
+        }
+        if(item.type=='상의'){
+            data['top'].push({id:item.id, name:item.name, img:item.images})
+        }
+        if(item.type=='하의'){
+            data['bottom'].push({id:item.id, name:item.name, img:item.images})
+        }
+        if(item.type=='신발'){
+            data['shoe'].push({id:item.id, name:item.name, img:item.image})
+        }
+        if(item.type=='무기'){
+            data['weapon'].push({id:item.id, name:item.name, img:item.image})
+        }
+        if(item.type=='방패'){
+            data['shield'].push({id:item.id, name:item.name, img:item.image})
+        }
+    }
+    
+    for(i=0; i<data.helmet.length; i++){
+        this.load.image(`헬멧${i+1}`, data.helmet[i].img[0].image)
+    }
+    for(i=0; i<data.hair.length; i++){
+        this.load.image(`헤어${i+1}`, data.hair[i].img[0].image)
+    }
+    for(i=0; i<data.top.length; i++){
+        this.load.image(`상의${i+1}`, data.top[i].img[0].image)
+    }
+    for(i=0; i<data.bottom.length; i++){
+        this.load.image(`하의${i+1}`, data.bottom[i].img[0].image)
+    }
+    for(i=0; i<data.shoe.length; i++){
+        this.load.image(`신발${i+1}`, data.shoe[i].img[0].image)
+    }
+    for(i=0; i<data.weapon.length; i++){
+        this.load.image(`무기${i+1}`, data.weapon[i].img[0].image)
+    }
+    for(i=0; i<data.shield.length; i++){
+        this.load.image(`방패${i+1}`, data.shield[i].img[0].image)
+    }
+    {% endcomment %}
 
 
 
  
    
   
-      //player_head
-      this.load.image('hair', "{% static '/resource/ui/character/0HAIR.png'%}")
-      this.load.image('face', "{% static '/resource/ui/character/0HEAD EYES OPEN.png'}")
-      this.load.image('head', "{% static '/resource/ui/character/HEAD EYES OPEN.png'}")
-      this.load.image('helmet', "{% static '/resource/ui/character/3HELMET.png'}")
-      
-      //player_top
-      this.load.image('arm_a1', "{% static '/resource/ui/character/ARM A1.png'}")
-      this.load.image('arm_a2', "{% static '/resource/ui/character/ARM A2.png'}")
-      this.load.image('arm_a3', "{% static '/resource/ui/character/ARM A3.png'}")
-      this.load.image('arm_b1', "{% static '/resource/ui/character/ARM B1.png'}")
-      this.load.image('arm_b2', "{% static '/resource/ui/character/ARM B2.png'}")
-      this.load.image('arm_b3b', "{% static '/resource/ui/character/ARM B3B.png'}")
-      this.load.image('arm_b3f', "{% static '/resource/ui/character/ARM B3F.png'}")
-      this.load.image('shoulder_a', "{% static '/resource/ui/character/SHOULDER A.png'}")
-      this.load.image('shoulder_b', "{% static '/resource/ui/character/SHOULDER B.png'}")
-      this.load.image('body', "{% static '/resource/ui/character/BODY.png'}")
-      this.load.image('hip', "{% static '/resource/ui/character/HIP.png'}")
-      
-      //player_bottom
-      this.load.image('leg_a1', "{% static '/resource/ui/character/LEG A1.png'}")
-      this.load.image('leg_a2', "{% static '/resource/ui/character/LEG A2.png'}")
-      this.load.image('leg_b1', "{% static '/resource/ui/character/LEG B1.png'}")
-      this.load.image('leg_b2', "{% static '/resource/ui/character/LEG B2.png'}")
+    //player_head
+    this.load.image('hair', "{% static '/resource/ui/character/0HAIR.png'%}")
+    this.load.image('face', "{% static '/resource/ui/character/0HEAD EYES OPEN.png'%}")
+    this.load.image('head', "{% static '/resource/ui/character/HEAD EYES OPEN.png'%}")
+    this.load.image('helmet', "{% static '/resource/ui/character/3HELMET.png'%}")
+    
+    //player_top
+    this.load.image('arm_a1', "{% static '/resource/ui/character/ARM A1.png'%}")
+    this.load.image('arm_a2', "{% static '/resource/ui/character/ARM A2.png'%}")
+    this.load.image('arm_a3', "{% static '/resource/ui/character/ARM A3.png'%}")
+    this.load.image('arm_b1', "{% static '/resource/ui/character/ARM B1.png'%}")
+    this.load.image('arm_b2', "{% static '/resource/ui/character/ARM B2.png'%}")
+    this.load.image('arm_b3b', "{% static '/resource/ui/character/ARM B3B.png'%}")
+    this.load.image('arm_b3f', "{% static '/resource/ui/character/ARM B3F.png'%}")
+    this.load.image('shoulder_a', "{% static '/resource/ui/character/SHOULDER A.png'%}")
+    this.load.image('shoulder_b', "{% static '/resource/ui/character/SHOULDER B.png'%}")
+    this.load.image('body', "{% static '/resource/ui/character/BODY.png'%}")
+    this.load.image('hip', "{% static '/resource/ui/character/HIP.png'%}")
+    
+    //player_bottom
+    this.load.image('leg_a1', "{% static '/resource/ui/character/LEG A1.png'%}")
+    this.load.image('leg_a2', "{% static '/resource/ui/character/LEG A2.png'%}")
+    this.load.image('leg_b1', "{% static '/resource/ui/character/LEG B1.png'%}")
+    this.load.image('leg_b2', "{% static '/resource/ui/character/LEG B2.png'%}")
 
-      //player_shoes
-      this.load.image('leg_a3', "{% static '/resource/ui/character/LEG A3.png'}")
-      this.load.image('leg_b3', "{% static '/resource/ui/character/LEG B3.png'}")
-      
-      //player_weapon
-      this.load.image('weapon', "{% static '/resource/ui/character/WEAPON.png'}")
+    //player_shoes
+    this.load.image('leg_a3', "{% static '/resource/ui/character/LEG A3.png'%}")
+    this.load.image('leg_b3', "{% static '/resource/ui/character/LEG B3.png'%}")
+    
+    //player_weapon
+    this.load.image('weapon', "{% static '/resource/ui/character/WEAPON.png'%}")
 
 
-      //player_shield
-      this.load.image('shield', "{% static '/resource/ui/character/SHIELD.png'}")
+    //player_shield
+    this.load.image('shield', "{% static '/resource/ui/character/SHIELD.png'%}")
 
-      //hairs
-      this.load.image('hair1', "http://localhost:8000/media/images/1HAIR.png")
-      this.load.image('hair2', "http://localhost:8000/media/images/3HAIR.png")
-      this.load.image('hair3', "http://localhost:8000/media/images/8HAIR.png")
-      this.load.image('hair4', "http://localhost:8000/media/images/9HAIR.png")
-      this.load.image('hair5', "http://localhost:8000/media/images/11HAIR.png")
-      this.load.image('hair6', "http://localhost:8000/media/images/16HAIR.png")
-      this.load.image('hair7', "http://localhost:8000/media/images/18HAIR.png")
-      this.load.image('hair8', "http://localhost:8000/media/images/23HAIR.png")
+    //helmets
+    this.load.image('helmet1', "media/images/1helmet.png")
+    this.load.image('helmet2', "media/images/2helmet.png")
+    this.load.image('helmet3', "media/images/4helmet.png")
+    this.load.image('helmet4', "media/images/5helmet.png")
+    this.load.image('helmet5', "media/images/6helmet.png")
 
-      //face
-      //추후추가
 
-      //tops
-      this.load.image('arm_a11', "http://localhost:8000/media/images/1ARM A1.png")
-      this.load.image('arm_a21', "http://localhost:8000/media/images/1ARM A2.png")
-      this.load.image('arm_a31', "http://localhost:8000/media/images/1ARM A3.png")
-      this.load.image('arm_b11', "http://localhost:8000/media/images/1ARM B1.png")
-      this.load.image('arm_b21', "http://localhost:8000/media/images/1ARM B2.png")
-      this.load.image('arm_b3b1', "http://localhost:8000/media/images/1ARM B3B.png")
-      this.load.image('arm_b3f1', "http://localhost:8000/media/images/1ARM B3F.png")
-      this.load.image('shoulder_a1', "http://localhost:8000/media/images/1SHOULDER A.png")
-      this.load.image('shoulder_b1', "http://localhost:8000/media/images/1SHOULDER B.png")
-      this.load.image('body1', "http://localhost:8000/media/images/1BODY.png")
-      this.load.image('hip1', "http://localhost:8000/media/images/1HIP.png")
- 
-      this.load.image('arm_a12', "http://localhost:8000/media/images/2ARM A1.png")
-      this.load.image('arm_a22', "http://localhost:8000/media/images/2ARM A2.png")
-      this.load.image('arm_a32', "http://localhost:8000/media/images/2ARM A3.png")
-      this.load.image('arm_b12', "http://localhost:8000/media/images/2ARM B1.png")
-      this.load.image('arm_b22', "http://localhost:8000/media/images/2ARM B2.png")
-      this.load.image('arm_b3b2', "http://localhost:8000/media/images/2ARM B3B.png")
-      this.load.image('arm_b3f2', "http://localhost:8000/media/images/2ARM B3F.png")
-      this.load.image('shoulder_a2', "http://localhost:8000/media/images/2SHOULDER A.png")
-      this.load.image('shoulder_b2', "http://localhost:8000/media/images/2SHOULDER B.png")
-      this.load.image('body2', "http://localhost:8000/media/images/2BODY.png")
-      this.load.image('hip2', "http://localhost:8000/media/images/2HIP.png")
- 
-      this.load.image('arm_a13', "http://localhost:8000/media/images/3ARM A1.png")
-      this.load.image('arm_a23', "http://localhost:8000/media/images/3ARM A2.png")
-      this.load.image('arm_a33', "http://localhost:8000/media/images/3ARM A3.png")
-      this.load.image('arm_b13', "http://localhost:8000/media/images/3ARM B1.png")
-      this.load.image('arm_b23', "http://localhost:8000/media/images/3ARM B2.png")
-      this.load.image('arm_b3b3', "http://localhost:8000/media/images/3ARM B3B.png")
-      this.load.image('arm_b3f3', "http://localhost:8000/media/images/3ARM B3F.png")
-      this.load.image('shoulder_a3', "http://localhost:8000/media/images/3SHOULDER A.png")
-      this.load.image('shoulder_b3', "http://localhost:8000/media/images/3SHOULDER B.png")
-      this.load.image('body3', "http://localhost:8000/media/images/3BODY.png")
-      this.load.image('hip3', "http://localhost:8000/media/images/3HIP.png")
+    //hairs
+    this.load.image('hair1', "media/images/1HAIR.png")
+    this.load.image('hair2', "media/images/3HAIR.png")
+    this.load.image('hair3', "media/images/8HAIR.png")
+    this.load.image('hair4', "media/images/9HAIR.png")
+    this.load.image('hair5', "media/images/11HAIR.png")
+    this.load.image('hair6', "media/images/16HAIR.png")
+    this.load.image('hair7', "media/images/18HAIR.png")
+    this.load.image('hair8', "media/images/23HAIR.png")
 
-      //bottoms
-      this.load.image('leg_a11', "http://localhost:8000/media/images/1LEG A1.png")
-      this.load.image('leg_a21', "http://localhost:8000/media/images/1LEG A2.png")
-      this.load.image('leg_b11', "http://localhost:8000/media/images/1LEG B1.png")
-      this.load.image('leg_b21', "http://localhost:8000/media/images/1LEG B2.png")
+    //tops
+    this.load.image('arm_a11', "media/images/1ARM A1.png")
+    this.load.image('arm_a21', "media/images/1ARM A2.png")
+    this.load.image('arm_a31', "media/images/1ARM A3.png")
+    this.load.image('arm_b11', "media/images/1ARM B1.png")
+    this.load.image('arm_b21', "media/images/1ARM B2.png")
+    this.load.image('arm_b3b1', "media/images/1ARM B3B.png")
+    this.load.image('arm_b3f1', "media/images/1ARM B3F.png")
+    this.load.image('shoulder_a1', "media/images/1SHOULDER A.png")
+    this.load.image('shoulder_b1', "media/images/1SHOULDER B.png")
+    this.load.image('body1', "media/images/1BODY.png")
+    this.load.image('hip1', "media/images/1HIP.png")
 
-      this.load.image('leg_a12', "http://localhost:8000/media/images/LEG A1.png")
-      this.load.image('leg_a22', "http://localhost:8000/media/images/LEG A2.png")
-      this.load.image('leg_b12', "http://localhost:8000/media/images/LEG B1.png")
-      this.load.image('leg_b22', "http://localhost:8000/media/images/LEG B2.png")
-  
-      //shoes
-      this.load.image('leg_a3', "http://localhost:8000/media/images/LEG A3.png")
-      this.load.image('leg_b3', "http://localhost:8000/media/images/LEG B3.png")
+    this.load.image('arm_a12', "media/images/2ARM A1.png")
+    this.load.image('arm_a22', "media/images/2ARM A2.png")
+    this.load.image('arm_a32', "media/images/2ARM A3.png")
+    this.load.image('arm_b12', "media/images/2ARM B1.png")
+    this.load.image('arm_b22', "media/images/2ARM B2.png")
+    this.load.image('arm_b3b2', "media/images/2ARM B3B.png")
+    this.load.image('arm_b3f2', "media/images/2ARM B3F.png")
+    this.load.image('shoulder_a2', "media/images/2SHOULDER A.png")
+    this.load.image('shoulder_b2', "media/images/2SHOULDER B.png")
+    this.load.image('body2', "media/images/2BODY.png")
+    this.load.image('hip2', "media/images/2HIP.png")
 
-      this.load.image('leg_a3', "http://localhost:8000/media/images/LEG A3.png")
-      this.load.image('leg_b3', "http://localhost:8000/media/images/LEG B3.png")
-  
-      //weapons
-      this.load.image('weapon1', "http://localhost:8000/media/images/WEAPON1.png")
-      this.load.image('weapon2', "http://localhost:8000/media/images/WEAPON2.png")
+    this.load.image('arm_a13', "media/images/3ARM A1.png")
+    this.load.image('arm_a23', "media/images/3ARM A2.png")
+    this.load.image('arm_a33', "media/images/3ARM A3.png")
+    this.load.image('arm_b13', "media/images/3ARM B1.png")
+    this.load.image('arm_b23', "media/images/3ARM B2.png")
+    this.load.image('arm_b3b3', "media/images/3ARM B3B.png")
+    this.load.image('arm_b3f3', "media/images/3ARM B3F.png")
+    this.load.image('shoulder_a3', "media/images/3SHOULDER A.png")
+    this.load.image('shoulder_b3', "media/images/3SHOULDER B.png")
+    this.load.image('body3', "media/images/3BODY.png")
+    this.load.image('hip3', "media/images/3HIP.png")
 
-      //shields
-      this.load.image('shield1', "http://localhost:8000/media/images/SHIELD1.png")
-      this.load.image('shield2', "http://localhost:8000/media/images/SHIELD2.png")
+    //bottoms
+    this.load.image('leg_a11', "media/images/1LEG A1.png")
+    this.load.image('leg_a21', "media/images/1LEG A2.png")
+    this.load.image('leg_b11', "media/images/1LEG B1.png")
+    this.load.image('leg_b21', "media/images/1LEG B2.png")
+
+    this.load.image('leg_a12', "media/images/2LEG A1.png")
+    this.load.image('leg_a22', "media/images/2LEG A2.png")
+    this.load.image('leg_b12', "media/images/2LEG B1.png")
+    this.load.image('leg_b22', "media/images/2LEG B2.png")
+
+    this.load.image('leg_a13', "media/images/3LEG A1.png")
+    this.load.image('leg_a23', "media/images/3LEG A2.png")
+    this.load.image('leg_b13', "media/images/3LEG B1.png")
+    this.load.image('leg_b23', "media/images/3LEG B2.png")
+
+    this.load.image('leg_a14', "media/images/4LEG A1.png")
+    this.load.image('leg_a24', "media/images/4LEG A2.png")
+    this.load.image('leg_b14', "media/images/4LEG B1.png")
+    this.load.image('leg_b24', "media/images/4LEG B2.png")
+
+    //shoes
+    this.load.image('leg_a31', "media/images/1LEG A3.png")
+    this.load.image('leg_b31', "media/images/1LEG B3.png")
+
+    this.load.image('leg_a32', "media/images/2LEG A3.png")
+    this.load.image('leg_b32', "media/images/2LEG B3.png")
+
+    this.load.image('leg_a33', "media/images/3LEG A3.png")
+    this.load.image('leg_b33', "media/images/3LEG B3.png")
+
+    this.load.image('leg_a34', "media/images/4LEG A3.png")
+    this.load.image('leg_b34', "media/images/4LEG B3.png")
+
+    this.load.image('leg_a35', "media/images/5LEG A3.png")
+    this.load.image('leg_b35', "media/images/5LEG B3.png")
+
+    //weapons
+    this.load.image('weapon1', "media/images/1WEAPON.png")
+    this.load.image('weapon2', "media/images/2WEAPON.png")
+    this.load.image('weapon3', "media/images/3WEAPON.png")
+    this.load.image('weapon4', "media/images/4WEAPON.png")
+    this.load.image('weapon5', "media/images/5WEAPON.png")
+
+    //shields
+    this.load.image('shield1', "media/images/1SHIELD.png")
+    this.load.image('shield2', "media/images/2SHIELD.png") 
+    this.load.image('shield3', "media/images/3SHIELD.png") 
+    this.load.image('shield4', "media/images/4SHIELD.png") 
+    this.load.image('shield5', "media/images/5SHIELD.png") 
+
 
       //UI
-      this.load.image('back', "{% static '/resource/ui/back2.png'%}");
-      this.load.image('helmetui', "{% static '/resource/ui/character/헬멧.png'%}");
-      this.load.image('hairui', "{% static '/resource/ui/character/헤어.png'%}");
-      this.load.image('topui', "{% static '/resource/ui/character/상의.png'%}");
-      this.load.image('bottomui', "{% static '/resource/ui/character/하의.png'%}");
-      this.load.image('shoesui', "{% static '/resource/ui/character/신발.png'%}");
-      this.load.image('weaponui', "{% static '/resource/ui/character/무기.png'%}");
-      this.load.image('shieldui', "{% static '/resource/ui/character/방패.png'%}");
-      this.load.image('selectui', "{% static '/resource/ui/character/확정.png'%}");
- 
+    this.load.image('back', "{% static '/resource/ui/back2.png'%}");
+    this.load.image('helmetui', "{% static '/resource/ui/character/헬멧.png'%}");
+    this.load.image('hairui', "{% static '/resource/ui/character/헤어.png'%}");
+    this.load.image('topui', "{% static '/resource/ui/character/상의.png'%}");
+    this.load.image('bottomui', "{% static '/resource/ui/character/하의.png'%}");
+    this.load.image('shoesui', "{% static '/resource/ui/character/신발.png'%}");
+    this.load.image('weaponui', "{% static '/resource/ui/character/무기.png'%}");
+    this.load.image('shieldui', "{% static '/resource/ui/character/방패.png'%}");
+    this.load.image('selectui', "{% static '/resource/ui/character/확정.png'%}");
+
   }
  
  
@@ -702,8 +747,6 @@
       arm_a2 = this.add.sprite(x-45, y+35, 'arm_a2').setScale(0.5); //오른팔 아래
       shoulder_a = this.add.sprite(x-35, y-7, 'shoulder_a').setScale(0.5); //오른쪽 어깨
       
-
-
       face = this.add.sprite(x-10, y-35, 'face').setScale(0.5); //얼굴
       hair = this.add.sprite(x-10, y-43, 'hair').setScale(0.5); //머리
       helmet = this.add.sprite(x-11, y-47, 'helmet').setScale(0.55); //헬멧
@@ -934,7 +977,46 @@
             shieldPanel.visible = true
         }
 
-        if(gameObject==minihair1){hair.setTexture('hair1')}
+    hairPanel.setChildrenInteractive({
+        targets: [
+            hairPanel.getByName('hair', true)
+        ]
+    })
+        .on('child.click', function (child) {
+            var category = child.getParentSizer().name
+            for(i=0; i<data[category].length; i++){
+                if(data[category][i].name == child.text){
+                    itemName = child.text
+                    //itemPay = data[category][i].pay
+                    itemID = data[category][i].id
+                }
+            }
+        })
+
+    selectui.on('pointerdown', function(event){
+        selectui.setTint(0x50bcdf);
+            {% comment %} $.ajax({
+                url:'api/havingitem/',
+                async : false,
+                type:'POST',
+                data:{
+                    "userID":userID,
+                    "itemID":itemID,
+                    csrfmiddlewaretoken: '{{ csrf_token }}',
+                },
+                datatype : 'json',
+                headers: { "X-CSRFToken": "{{ csrf_token }}" },
+            }) {% endcomment %}
+    })
+
+    selectui.on('pointerup', function(event){
+        selectui.clearTint()
+    })
+
+
+
+
+        {% comment %} if(gameObject==minihair1){hair.setTexture('hair1')}
         if(gameObject==minihair2){hair.setTexture('hair2')}
         if(gameObject==minihair3){hair.setTexture('hair3')}
         if(gameObject==minihair4){hair.setTexture('hair4')}
@@ -998,7 +1080,7 @@
             shoulder_b.setTexture('shoulder_b2'),
             body.setTexture('body2'),
             hip.setTexture('hip2')
-        }
+        } {% endcomment %}
 
     })
 
