@@ -67,3 +67,9 @@ class HavingItemAPI(APIView):
     serializer = HavingItemSerializer(HavingItem_list, many=True)
     return Response(serializer.data)
   
+class WearingItemAPI(APIView):
+  def get(self, request):
+    Wearing_list = wearing.objects.all()
+    serializer = WearingSerializer(Wearing_list, many=True)
+    return Response(serializer.data)
+  

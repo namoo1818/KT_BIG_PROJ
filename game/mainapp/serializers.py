@@ -55,3 +55,8 @@ class HavingItemSerializer(serializers.ModelSerializer):
   class Meta:
     model = HavingItem
     fields = '__all__'
+    
+class WearingSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = wearing
+    fields = '__all__'
