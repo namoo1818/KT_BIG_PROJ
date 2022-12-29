@@ -2,11 +2,6 @@ from rest_framework import serializers
 from .models import *
 from core.models import User
 
-class ShopSerializer(serializers.ModelSerializer):
-  class Meta:
-    model = Shop
-    fields = '__all__'
-    
 # class ItemSerializer(serializers.ModelSerializer):
 #   class Meta:
 #     model = Item
@@ -41,6 +36,14 @@ class ItemSerializer(serializers.ModelSerializer):
             ItemImage.objects.create(item=instance, image=image_data)
         return instance
     
+class ShopSerializer(serializers.ModelSerializer):
+  item = ItemSerializer(read_only=True)
+
+  class Meta:
+    model = Shop
+    fields = '__all__'
+        
+
 class StorePostSerializer(serializers.ModelSerializer) :
     class Meta:
         model = HavingItem
