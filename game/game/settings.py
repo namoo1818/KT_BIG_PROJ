@@ -11,11 +11,11 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 import os
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
@@ -26,14 +26,22 @@ SECRET_KEY = 'django-insecure-j6^p2!sn7dh6aq&)c2#tur=-k5j&-^!z_j@-5*_^jd(_5bzasd
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "face-game.onrender.com",
+    "127.0.0.1",
+    "localhost",
+]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    # channels
+    'daphne',
+    # 
     'mainapp',
     'core',
+    ###
     'rest_framework',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -58,8 +66,8 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 SITE_ID = 1
 
-LOGIN_REDIRECT_URL = "http://localhost:8000/core/"
-LOGOUT_REDIRECT_URL = "http://localhost:8000/accounts/login/"
+LOGIN_REDIRECT_URL = "/mainapp/main"
+LOGOUT_REDIRECT_URL = "/accounts/login/"
 
 AUTHENTICATION_BACKENDS = [
     # Needed to login by username in Django admin, regardless of `allauth`
@@ -115,6 +123,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # whitenoise
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'game.urls'
@@ -135,35 +145,29 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'game.wsgi.application'
+# WSGI_APPLICATION = 'game.wsgi.application'
+ASGI_APPLICATION = 'game.asgi.application'
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": ["rediss://red-cegkhc02i3mkhvoakgh0:Z6M9PSoaNV0aOv0XR2y3CmJ8TpYGGGfQ@singapore-redis.render.com:6379/0"],
+        },
+    },
+}
 
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
 
 DATABASES = {
-    # sqlite
+    ### sqlite
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }
-
-    # mysql
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql', # mysql 엔진 설정
-    #     'NAME': 'kt', # 데이터베이스 이름
-    #     'USER': 'cos', # 데이터베이스 연결시 사용할 유저 이름
-    #     'PASSWORD': 'cos1234', # 유저 패스워드
-    #     'HOST': '127.0.0.1',
-    #     'PORT': '3306',
-    #     'OPTIONS': {
-    #         'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
-    #         'charset': 'utf8',
-    #         'use_unicode': True,
-    #     },
-    # }
+    #'default': dj_database_url.parse('postgres://runnig_hi_db_user:UtSu9lOKggJVu62U5Aqf2E4e5WIHOYO7@dpg-cefainsgqg4b3hao43lg-a.singapore-postgres.render.com/runnig_hi_db', conn_max_age=600),
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
@@ -198,11 +202,17 @@ USE_L10N = True
 USE_TZ = True
 
 
+ 
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'config', 'static')
 STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+# for serving static files
+## whitenoise
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+## 배포 시 제거
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
@@ -210,6 +220,8 @@ STATICFILES_DIRS = (
 # Media Files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# MODEL_ROOT = os.path.join(BASE_DIR, 'model', 'face_models')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
