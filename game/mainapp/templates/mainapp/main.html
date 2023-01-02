@@ -85,7 +85,7 @@
         let panel1 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
         let panel2 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
 
-        var settingPanel = this.rexUI.add.roundRectangle(-150,90,150,50,7,0xffffff).setStrokeStyle(1, 0x4f4f4f)
+        var settingPanel = this.rexUI.add.roundRectangle(-150,90,150,50,7,0xffffff).setStrokeStyle(1, 0x4f4f4f).setInteractive({cursor:'pointer'})
         var zoom = this.add.image(-150,90,'zoom').setScale(0.9).setInteractive({cursor:'pointer'})
         var zoomText = this.add.text(-150,81,'사진 업로드',{color:'black', font:'450 16px Arial'})
 
@@ -111,6 +111,13 @@
                           })
                       }
                   })
+          })
+
+          settingPanel.on('pointerdown', function(event){
+            settingPanel.setX(-150)
+            zoom.setX(-150)
+            zoomText.setX(-150)
+            setting_onoff=-1
           })
   
         circle.setStrokeStyle(2,0x868686)
@@ -219,7 +226,7 @@
         })
 
         pveStart.on('pointerdown', function(event){
-          window.location.href = `/mainapp/battle`
+          window.location.href = `/core/battle`
         })
 
         pvpStart.on('pointerdown', function(event){
