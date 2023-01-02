@@ -1,11 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from django.http import HttpResponse
+from django.contrib import auth
 from .serializers import *
-from core.models import User
 from .serializers import ShopSerializer
 import redis
 
@@ -108,3 +106,6 @@ def pvp(request, room_name):
     'room_name': room_name,
     'player_name': request.user.username
   })
+  
+def upload(request) :
+  

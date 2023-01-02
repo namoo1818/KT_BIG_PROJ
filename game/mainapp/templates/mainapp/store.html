@@ -130,12 +130,13 @@
                 data['bottom'].push({id:item.id, name:item.name , pay:shop.pay, img:item.images})
             }
             if(item.type=='신발'){
-                data['shoe'].push({id:item.id, name:item.name , pay:shop.pay, img:item.image})
+                data['shoe'].push({id:item.id, name:item.name , pay:shop.pay, img:item.images})
             }
             if(item.type=='무기'){
-                data['weapon'].push({id:item.id, name:item.name , pay:shop.pay, img:item.image})
+                data['weapon'].push({id:item.id, name:item.name , pay:shop.pay, img:item.images})
             }
         }
+        console.log(data)
         
         for(i=0; i<data.hair.length; i++){
             this.load.image(`헤어${i+1}`, data.hair[i].img[0].image)

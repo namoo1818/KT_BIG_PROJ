@@ -7,6 +7,7 @@
     let achieveUser;
     let dic_onoff = -1; // dic panel을 관리하기위한 전역변수
     let achievement_onoff = -1; // achievement panel을 관리하기위한 전역변수
+    let setting_onoff = -1
     let name
     let profile
       async function preload(){
@@ -19,6 +20,9 @@
         this.load.image('panel', "{% static '/resource/ui/background.jpg'%}")
         this.load.image('sound_on', "{% static '/resource/ui/main/musicOn.png'%}")
         this.load.image('sound_off', "{% static '/resource/ui/main/musicOff.png'%}")
+        this.load.image('exit', "{% static '/resource/ui/exitLeft.png'%}")
+        this.load.image('zoom', "{% static '/resource/ui/zoom.png'%}")
+
         this.load.audio('title_music', "{% static '/resource/bgm/title_music.mp3'%}")
 
         await fetch('http://localhost:8000/core/api/user')
@@ -29,14 +33,15 @@
            })
 
         this.load.image('profile_image', profile)
-
+        
       }
       
       async function create(){ 
         
         this.bgm = this.sound.play("title_music", {loop:true})
-        this.add.image(35,35,'profile_image').setInteractive({cursor:'pointer'})
+        var setting = this.add.image(35,35,'profile_image').setInteractive({cursor:'pointer'})
         let circle = this.add.circle(35,35,25)
+        var exit = this.add.image(window_width-30, 75, 'exit').setInteractive({cursor:'pointer'})
 
         // 각종 UI 배치
 
@@ -67,6 +72,10 @@
         let sound_on = this.add.image(window_width-30,30,'sound_on').setInteractive({cursor:'pointer'})
         let panel1 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
         let panel2 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
+
+        var settingPanel = this.rexUI.add.roundRectangle(-150,90,150,50,7,0xffffff).setStrokeStyle(1, 0x4f4f4f)
+        var zoom = this.add.image(-150,90,'zoom').setScale(0.9).setInteractive({cursor:'pointer'})
+        var zoomText = this.add.text(-150,81,'사진 업로드',{color:'black', font:'450 16px Arial'})
         
         circle.setStrokeStyle(2,0x868686)
         panel1.alpha = 0.7
@@ -178,6 +187,8 @@
           else if(dic_onoff==1){
             panel1.setX(-150)
             dic_onoff=-1
+
+
           }
           else{
             panel1.setX(window_width/2)
@@ -219,6 +230,29 @@
           sound_on.visible = true
           sound_off.visible = false
           localStorage.setItem("bgm", 'true')
+        })
+
+        exit.on('pointerdown', function(event){
+          location.replace('http://localhost:8000/accounts/logout')
+        })
+
+        setting.on('pointerdown', function(event){
+          if(setting_onoff==1){
+            settingPanel.setX(-150)
+            zoom.setX(-150)
+            zoomText.setX(-150)
+            setting_onoff=-1
+          }
+          else{
+            settingPanel.setX(80)
+            zoom.setX(30)
+            zoomText.setX(60)
+            setting_onoff=1
+          }
+        })
+
+        zoom.on('pointerdown', function(event){
+          
         })
 
 
