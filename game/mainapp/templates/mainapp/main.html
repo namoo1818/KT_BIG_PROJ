@@ -16,6 +16,9 @@
           url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
           sceneKey: 'rexUI'
         })
+        this.load.plugin('rexfilechooserplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexfilechooserplugin.min.js', true)
+        this.load.plugin('rexcanvasplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcanvasplugin.min.js', true)
+
         // resource load
         this.load.image('panel', "{% static '/resource/ui/background.jpg'%}")
         this.load.image('sound_on', "{% static '/resource/ui/main/musicOn.png'%}")
@@ -44,6 +47,13 @@
         var setting = this.add.image(35,35,'profile_image').setInteractive({cursor:'pointer'})
         let circle = this.add.circle(35,35,25)
         var exit = this.add.image(window_width-30, 75, 'exit').setInteractive({cursor:'pointer'})
+
+        var canvas = this.add.rexCanvas(35, 35, 50, 50).fill('black');
+        canvas.fitTo = (function (parent) {
+            var newSize = FitTo(this, parent, true);
+            this.setDisplaySize(newSize.width, newSize.height);
+        }).bind(canvas)
+        canvas.fitTo('profile_image')
 
         // 각종 UI 배치
 
@@ -84,7 +94,28 @@
         var pvpStart = this.add.image(window_width-69,window_height-43, 'pvpStart').setInteractive({cursor:'pointer'})
         var pvpText = this.add.text(window_width-85,window_height-58, 'PVP', {color:'black', font:'450 16px Arial'})
         var line = this.add.line(window_width-70,window_height-67, 0, 0, 100, 0, 0xffffff)
-        
+
+        var scene = this
+        zoom
+          .on('pointerdown', function () {
+              scene.plugins.get('rexfilechooserplugin').open({ accept: 'image/*' })
+                  .then(function (result) {
+                      var files = result.files;
+                      if (files.length) {
+                          console.log(files[0])
+                          var url = URL.createObjectURL(files[0])
+                          canvas.loadFromURLPromise(url)
+                            .then(function () {
+                              URL.revokeObjectURL(url);
+                              canvas.fitTo(zoom)
+                              setting.visible=false
+                          })
+                      }
+                      else {
+                      }
+                  })
+          })
+  
         circle.setStrokeStyle(2,0x868686)
         panel1.alpha = 0.7
         panel2.alpha = 0.7
@@ -290,6 +321,35 @@
 
       function update(){
       }
+
+      var FitTo = function (child, parent, out) {
+        if (out === undefined) {
+            out = {};
+        } else if (out === true) {
+            out = globalSize;
+        }
+    
+        if ((child.width <= parent.width) && (child.height <= parent.height)) {
+            out.width = child.width;
+            out.height = child.height;
+            return out;
+        }
+    
+        var childRatio = child.width / child.height;
+        out.width = Math.min(child.width, parent.width);
+        out.height = Math.min(child.height, parent.height);
+        var ratio = out.width / out.height;
+    
+        if (ratio < childRatio) {
+            out.height = out.width / childRatio;
+        } else if (ratio > childRatio) {
+            out.width = out.height * childRatio;
+        }
+    
+        return out;
+      }
+    
+      var globalSize = {};
       
       let config = {
         type: Phaser.AUTO,
