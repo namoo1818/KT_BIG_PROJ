@@ -98,11 +98,10 @@
         var scene = this
         zoom
           .on('pointerdown', function () {
-              scene.plugins.get('rexfilechooserplugin').open({ accept: 'image/*' })
+              scene.plugins.get('rexfilechooserplugin').open({ accept: 'image/*', multiple:false })
                   .then(function (result) {
                       var files = result.files;
                       if (files.length) {
-                          console.log(files[0])
                           var url = URL.createObjectURL(files[0])
                           canvas.loadFromURLPromise(url)
                             .then(function () {
@@ -110,8 +109,6 @@
                               canvas.fitTo(zoom)
                               setting.visible=false
                           })
-                      }
-                      else {
                       }
                   })
           })
