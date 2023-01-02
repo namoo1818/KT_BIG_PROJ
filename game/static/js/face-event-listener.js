@@ -97,14 +97,16 @@ video.addEventListener("play", () => {
       .withFaceLandmarks();
     // .withFaceExpressions(); // 주석
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
-    canvas.getContext("2d").clearRect(0, 0, video.width, video.height);
+    let cap = new cv.VideoCapture(video); // 12-28 수정된부분
+    // canvas.getContext("2d").clearRect(0, 0, video.width, video.height);
 
     ///////////// 새로 추가
-    let context = canvas.getContext("2d");
+    //     let context = canvas.getContext("2d");
     let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
     let dst = new cv.Mat(video.height, video.width, cv.CV_8UC1);
+    cap.read(src); // 12-28 수정된부분
     //context.drawImage(video, 0, 0, video.width, video.height);
-    src.data.set(context.getImageData(0, 0, video.width, video.height).data);
+    //     src.data.set(context.getImageData(0, 0, video.width, video.height).data);
     // faceapi.draw.drawDetections(canvas, resizedDetections); // 주석
     // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections); // 주석
     // faceapi.draw.drawFaceExpressions(canvas, resizedDetections); // 주석
@@ -123,17 +125,17 @@ video.addEventListener("play", () => {
 
     // 수정된 부분
     let x_df_eye_left_start = parseInt(test_x[36] - x_left);
-    let x_df_eye_left_end = 30;
+    let x_df_eye_left_end = 20;
     // let x_df_eye_left_end = parseInt(test_x[39] + x_left) - x_df_eye_left_start
 
     let y_df_eye_left_start = parseInt(test_y[38] - y_left);
-    let y_df_eye_left_end = 40; // 파라미터가 수정되었습니다 20 --> 40
+    let y_df_eye_left_end = 15; // 파라미터가 수정되었습니다 20 --> 40
 
     let x_df_eye_right_start = parseInt(test_x[42] - x_right);
-    let x_df_eye_right_end = 30;
+    let x_df_eye_right_end = 20;
 
     let y_df_eye_right_start = parseInt(test_y[44] - y_right);
-    let y_df_eye_right_end = 40; // 파라미터가 수정되었습니다 20 --> 40
+    let y_df_eye_right_end = 15; // 파라미터가 수정되었습니다 20 --> 40
     // 수정된 부분
     
     // You can try more different parameters

@@ -2,12 +2,6 @@ from rest_framework import serializers
 from .models import *
 from core.models import User
 
-# class ItemSerializer(serializers.ModelSerializer):
-#   class Meta:
-#     model = Item
-#     fields = '__all__'
-
-
 class ItemImageSerializer(serializers.ModelSerializer):
 
     image = serializers.ImageField(use_url=True)

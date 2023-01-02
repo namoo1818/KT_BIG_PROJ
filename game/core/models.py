@@ -17,7 +17,7 @@ class User(AbstractUser):
     age = models.CharField(max_length=3, blank=True, null=True)
     gender = models.CharField(max_length=2, blank=True, null=True)
     money = models.IntegerField(default=0)
-    profile_image = models.ImageField(upload_to='profile', default="default.png")
+    profile_image = models.ImageField(upload_to='profile', default="profile/default.png")
 
 
 
@@ -93,6 +93,18 @@ class AchieveUser(models.Model):
     achieve = models.ForeignKey(Achievement,on_delete=models.CASCADE)
     achieveGet = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
+
+class HistoryByDay(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, models.CASCADE)
+    face_image = models.ImageField(upload_to='face')
+    age = models.IntegerField(null=True, blank=True)
+    date = models.DateField(auto_now_add=True)
+    mouthCnt = models.IntegerField(default=0)
+    eyeCnt = models.IntegerField(default=0)
+
+    def __str__(self):
+        return self.user.username + '/' + str(self.date)
 
 class FacePoint(models.Model):
     id = models.AutoField(primary_key=True)
