@@ -2,6 +2,10 @@ from django.shortcuts import render
 from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
+from django.http import HttpResponse
+from .serializers import *
+from core.models import User
 from .serializers import ShopSerializer
 import redis
 
@@ -25,6 +29,56 @@ def character(request):
 def skills(request):
   return render(request, 'mainapp/skills.html')
 
+def analysis(request):
+  return render(request, 'mainapp/analysis.html')
+
+def recsys(request):
+  return render(request, 'mainapp/recsys.html')
+
+class shopAPI(APIView):
+  def get(self, request):
+    shop_list = Shop.objects.all()
+    serializer = ShopSerializer(shop_list, many=True)
+    return Response(serializer.data)
+  
+class ItemAPI(APIView):
+  def get(self, request):
+    Item_list = Item.objects.prefetch_related('history').all()
+    serializer = ItemSerializer(Item_list, many=True)
+    return Response(serializer.data)
+  
+class StoreAPI(APIView) :
+  def post(self, request) :
+    Post = StorePostSerializer(data=request.data)
+    print('post 요청')
+    print(Post)
+    if Post.is_valid() :
+      print('post alive')
+      Post.save()
+      return Response(Post.data)
+    else :
+      print('post dead')
+      return Response(Post.data)
+    
+  def patch(self, request) :
+    value = int(request.data.__getitem__('money'))
+    data = request.user.money - value
+    request.user.money = data
+    request.user.save()
+    return Response()
+    
+class HavingItemAPI(APIView):
+  def get(self, request):
+    HavingItem_list = HavingItem.objects.all()
+    serializer = HavingItemSerializer(HavingItem_list, many=True)
+    return Response(serializer.data)
+  
+class WearingItemAPI(APIView):
+  def get(self, request):
+    Wearing_list = wearing.objects.all()
+    serializer = WearingSerializer(Wearing_list, many=True)
+    return Response(serializer.data)
+  
 def result(request):
   left_eye_cnt = request.GET.get('left_eye', 0)
   right_eye_cnt = request.GET.get('right_eye', 0)
@@ -34,11 +88,6 @@ def result(request):
     'right_eye_cnt': right_eye_cnt,
     'mouth_cnt': mouth_cnt
   })
-class ShopAPI(APIView):
-  def get(self, request):
-    shop_list = Shop.objects.prefetch_related('item').all()
-    serializer = ShopSerializer(shop_list, many=True)
-    return Response(serializer.data)
 
 def find_room(request):
   return render(request, 'mainapp/find-room.html')
