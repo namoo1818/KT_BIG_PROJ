@@ -205,7 +205,7 @@
             this.clearTint()
         })
         back.on('pointerdown', function(event){
-            location.replace('http://localhost:8000/mainapp/main')
+            window.history.back()
         })
 
         var hairPanel = this.rexUI.add.scrollablePanel({
