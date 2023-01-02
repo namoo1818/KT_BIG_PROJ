@@ -68,6 +68,12 @@ class HavingItemAPI(APIView):
     serializer = HavingItemSerializer(HavingItem_list, many=True)
     return Response(serializer.data)
   
+class WearingItemAPI(APIView):
+  def get(self, request):
+    Wearing_list = wearing.objects.all()
+    serializer = WearingSerializer(Wearing_list, many=True)
+    return Response(serializer.data)
+  
 def result(request):
   left_eye_cnt = request.GET.get('left_eye', 0)
   right_eye_cnt = request.GET.get('right_eye', 0)
