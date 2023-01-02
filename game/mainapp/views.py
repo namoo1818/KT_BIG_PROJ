@@ -106,6 +106,3 @@ def pvp(request, room_name):
     'room_name': room_name,
     'player_name': request.user.username
   })
-  
-def upload(request) :
-  

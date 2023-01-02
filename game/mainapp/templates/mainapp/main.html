@@ -22,6 +22,8 @@
         this.load.image('sound_off', "{% static '/resource/ui/main/musicOff.png'%}")
         this.load.image('exit', "{% static '/resource/ui/exitLeft.png'%}")
         this.load.image('zoom', "{% static '/resource/ui/zoom.png'%}")
+        this.load.image('pveStart', "{% static '/resource/ui/main/pve.png'%}")
+        this.load.image('pvpStart', "{% static '/resource/ui/main/pvp.png'%}")
 
         this.load.audio('title_music', "{% static '/resource/bgm/title_music.mp3'%}")
 
@@ -54,7 +56,7 @@
         var achievement = this.rexUI.add.roundRectangle(60,270,100,43,7,0xD9D9D9).setInteractive({cursor:'pointer'})
         this.add.text(43, 262, '업적', {color:'black', font:'450 16px Arial'})
 
-        var start = this.add.circle(window_width-70,window_height-70,50,50, 0x616161).setInteractive({cursor:'pointer'})
+        var start = this.add.circle(window_width-70,window_height-70,50,50, 0x54717a).setInteractive({cursor:'pointer'})
         this.add.text(window_width-113, window_height-80, '게임 시작', {color:'black', font:'450 20px Arial'})
 
         var store = this.add.circle(window_width-45,window_height-170,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
@@ -76,10 +78,22 @@
         var settingPanel = this.rexUI.add.roundRectangle(-150,90,150,50,7,0xffffff).setStrokeStyle(1, 0x4f4f4f)
         var zoom = this.add.image(-150,90,'zoom').setScale(0.9).setInteractive({cursor:'pointer'})
         var zoomText = this.add.text(-150,81,'사진 업로드',{color:'black', font:'450 16px Arial'})
+
+        var pveStart = this.add.image(window_width-70,window_height-97, 'pveStart').setInteractive({cursor:'pointer'})
+        var pveText = this.add.text(window_width-85,window_height-97, 'PVE', {color:'black', font:'450 16px Arial'})
+        var pvpStart = this.add.image(window_width-69,window_height-43, 'pvpStart').setInteractive({cursor:'pointer'})
+        var pvpText = this.add.text(window_width-85,window_height-58, 'PVP', {color:'black', font:'450 16px Arial'})
+        var line = this.add.line(window_width-70,window_height-67, 0, 0, 100, 0, 0xffffff)
         
         circle.setStrokeStyle(2,0x868686)
         panel1.alpha = 0.7
         panel2.alpha = 0.7
+
+        pveStart.visible=false
+        pvpStart.visible=false
+        pveText.visible=false
+        pvpText.visible=false
+        line.visible=false
         
         // 새로고침, 페이지 이동, 재접속 등 환경이 변경되었을때 bgm의 상태를 유지하기 위하여 localstorage에 상태를 저장
         if(localStorage.getItem('bgm')==null){ 
@@ -168,6 +182,19 @@
           this.setFillStyle(0xD9D9D9)
         })
         start.on('pointerdown', function(event){
+          start.visible=false
+          pveStart.visible=true
+          pvpStart.visible=true
+          pveText.visible=true
+          pvpText.visible=true
+          line.visible=true
+        })
+
+        pveStart.on('pointerdown', function(event){
+          
+        })
+
+        pvpStart.on('pointerdown', function(event){
           location.replace('http://localhost:8000/mainapp/room')
         })
 
