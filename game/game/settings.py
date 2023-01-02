@@ -221,7 +221,7 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-# MODEL_ROOT = os.path.join(BASE_DIR, 'model', 'face_models')
+AGE_MODEL_PATH = os.path.join(BASE_DIR, 'static', 'models', 'age_model.h5')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

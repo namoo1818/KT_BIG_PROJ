@@ -9,55 +9,55 @@ function move_mouth(da) {
   return tmp_dist
 }
 
-// function PartShot(str1) {
-//   //특정부분 스크린샷
-//   html2canvas(document.getElementById("video"))
-//   //id container 부분만 스크린샷
-//       .then(function (canvas) {
-//           //jpg 결과값
-//           drawImg(canvas.toDataURL('image/jpeg'));
-//           //이미지 저장
-//           saveAs(canvas.toDataURL(), 'face_org'+String(str1)+'.jpg');
-//       }).catch(function (err) {
-//           console.log(err);
-//       });
-// }
+function PartShot(str1) {
+  //특정부분 스크린샷
+  html2canvas(document.getElementById("video"))
+  //id container 부분만 스크린샷
+      .then(function (canvas) {
+          //jpg 결과값
+          drawImg(canvas.toDataURL('image/jpeg'));
+          //이미지 저장
+          saveAs(canvas.toDataURL(), 'face_org'+String(str1)+'.jpg');
+      }).catch(function (err) {
+          console.log(err);
+      });
+}
 
-// function saveAs(uri, filename) {
-//   var link = document.createElement("a");
-//   if (typeof link.download === "string") {
-//     link.href = uri;
-//     link.download = filename;
-//     document.body.appendChild(link);
-//     link.click();
-//     document.body.removeChild(link);
-//   } else {
-//     window.open(uri);
-//   }
-// }
+function saveAs(uri, filename) {
+  var link = document.createElement("a");
+  if (typeof link.download === "string") {
+    link.href = uri;
+    link.download = filename;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  } else {
+    window.open(uri);
+  }
+}
 
-// function drawImg(imgData) {
-//   // console.log(imgData);
-//   //imgData의 결과값을 console 로그롤 보실 수 있습니다.
-//   return new Promise(
-//     function reslove() {
-//       //내가 결과 값을 그릴 canvas 부분 설정
-//       var canvas = document.getElementById("canvas");
-//       var ctx = canvas.getContext("2d");
-//       //canvas의 뿌려진 부분 초기화
-//       ctx.clearRect(0, 0, canvas.width, canvas.height);
+function drawImg(imgData) {
+  // console.log(imgData);
+  //imgData의 결과값을 console 로그롤 보실 수 있습니다.
+  return new Promise(
+    function reslove() {
+      //내가 결과 값을 그릴 canvas 부분 설정
+      var canvas = document.getElementById("canvas");
+      var ctx = canvas.getContext("2d");
+      //canvas의 뿌려진 부분 초기화
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-//       var imageObj = new Image();
-//       imageObj.onload = function () {
-//         ctx.drawImage(imageObj, 0, 0);
-//         //canvas img를 그리겠다.
-//       };
-//       imageObj.src = imgData;
-//       //그릴 image데이터를 넣어준다.
-//     },
-//     function reject() {}
-//   );
-// }
+      var imageObj = new Image();
+      imageObj.onload = function () {
+        ctx.drawImage(imageObj, 0, 0);
+        //canvas img를 그리겠다.
+      };
+      imageObj.src = imgData;
+      //그릴 image데이터를 넣어준다.
+    },
+    function reject() {}
+  );
+}
 // 수정된 부분
 
 
@@ -101,12 +101,12 @@ video.addEventListener("play", () => {
     // canvas.getContext("2d").clearRect(0, 0, video.width, video.height);
 
     ///////////// 새로 추가
-//     let context = canvas.getContext("2d");
+    //     let context = canvas.getContext("2d");
     let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
     let dst = new cv.Mat(video.height, video.width, cv.CV_8UC1);
     cap.read(src); // 12-28 수정된부분
     //context.drawImage(video, 0, 0, video.width, video.height);
-//     src.data.set(context.getImageData(0, 0, video.width, video.height).data);
+    //     src.data.set(context.getImageData(0, 0, video.width, video.height).data);
     // faceapi.draw.drawDetections(canvas, resizedDetections); // 주석
     // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections); // 주석
     // faceapi.draw.drawFaceExpressions(canvas, resizedDetections); // 주석
@@ -116,7 +116,7 @@ video.addEventListener("play", () => {
     let test_y = resizedDetections[0].landmarks._positions.map((e) => e._y);
 
     x_arr.push(test_x);
-    y_arr.push(test_y);
+    y_arr.push(test_x);
     
     // 12-28 수정된 부분
     let x_df_eye_left_start = parseInt(test_x[36] - 5);
@@ -193,10 +193,10 @@ video.addEventListener("play", () => {
       left_count2 = 1;
       left_skill_count++;
       // 수정된 부분
-//       if (capture_count_right <= 3) { // 웃긴 얼굴 캡쳐, 너무 많이 다운로드되어 일단은 저장개수를 변수 한개로 임시조정해두었습니다
-//         PartShot(for_name)
-//         capture_count_right++
-//         }
+      if (capture_count_right <= 3) { // 웃긴 얼굴 캡쳐, 너무 많이 다운로드되어 일단은 저장개수를 변수 한개로 임시조정해두었습니다
+        PartShot(for_name)
+        capture_count_right++
+        }
       };
       if (left_count < 2) {
         left_count2 = 0
@@ -208,10 +208,10 @@ video.addEventListener("play", () => {
       right_count2 = 1;
       right_skill_count++;
       // 수정된 부분
-//       if (capture_count_left <= 3) {
-//         PartShot(for_name)
-//         capture_count_left++
-//         }
+      if (capture_count_left <= 3) {
+        PartShot(for_name)
+        capture_count_left++
+        }
     }
     if (right_count < 2) {
       right_count2 = 0
@@ -259,10 +259,10 @@ video.addEventListener("play", () => {
       attackAction();
       console.log("입 스킬발동" + String(mouth_skill_count) + "번!");
       // 수정된 부분
-//       if (capture_count_mouth <= 3){
-//         PartShot(for_name)
-//         capture_count_mouth++ 
-//       }
+      if (capture_count_mouth <= 3){
+        PartShot(for_name)
+        capture_count_mouth++ 
+      }
       // 수정된 부분
       count2++;
       mouth_skill_count++;
