@@ -11,6 +11,7 @@ urlpatterns = [
     path('dic', views.dic),
     path('achievement', views.achievement),
     path('analysis', views.analysis),
+    path('recsys', views.recsys),
 
     path('character', views.character),
     path('skills', views.skills),
