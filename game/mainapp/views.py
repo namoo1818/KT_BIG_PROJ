@@ -33,7 +33,7 @@ def analysis(request):
   return render(request, 'mainapp/analysis.html')
 
 def recsys(request):
-  return render(request, 'mainapp/recsys.html')
+  return render(request, 'mainapp/recsys_tmp.html')
 
 class shopAPI(APIView):
   def get(self, request):

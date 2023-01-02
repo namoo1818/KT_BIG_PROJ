@@ -12,6 +12,7 @@ urlpatterns = [
     path('achievement', views.achievement),
     path('analysis', views.analysis),
     path('recsys', views.recsys),
+    path('recsys_tmp', views.recsys),
 
     path('character', views.character),
     path('skills', views.skills),
