@@ -1,12 +1,8 @@
 {% extends "base.html" %}
 {% load static %}
 {% block script %}
-<<<<<<< HEAD
 <script src="{% static 'js/range.js' %}"></script>
 <script src="{% static 'js/math.js' %}"></script>
-=======
-
->>>>>>> 2a8b50baf5884f08d08d2152011ca0d25c61eea7
 <script>
   let status = 'off_battle'
   
@@ -46,7 +42,6 @@
         this.load.image('enemy', "{% static '/images/mob.png'%}")
         this.load.image('background', "{% static '/images/background.jpg'%}")
         this.load.image('hp', "{% static '/images/hp.png'%}")
-<<<<<<< HEAD
         
         
         //background
@@ -73,11 +68,6 @@
         this.load.image('skill4', "{% static '/resource/ui/skills/skills/skill4.png'%}")
         this.load.image('skill5', "{% static '/resource/ui/skills/skills/skill5.png'%}")
         this.load.image('skill6', "{% static '/resource/ui/skills/skills/skill6.png'%}")
-=======
-        this.load.image('skill1', "{% static '/images/thunder.png'%}")
-        this.load.image('skill2', "{% static '/images/flash.png'%}")
-        this.load.image('skill3', "{% static '/images/heart.png'%}")
->>>>>>> 2a8b50baf5884f08d08d2152011ca0d25c61eea7
 
 
         //health Bar image
@@ -92,18 +82,13 @@
         
 
       }
-<<<<<<< HEAD
       let Monsters = []
       
-=======
-      let mob
->>>>>>> 2a8b50baf5884f08d08d2152011ca0d25c61eea7
       let mob_move = false
       function create(){
 
         this.add.image(150,300,'background')
         //health bar create
-<<<<<<< HEAD
         let y = 250
         let x = 150
         this.add.image(150, 100, 'map').setScale(2)
@@ -181,11 +166,6 @@
       Axolot2.setScale(1);
       Axolot2.play('mob4_stable');
 
-=======
-        let y = 100
-        let x = 160
-       
->>>>>>> 2a8b50baf5884f08d08d2152011ca0d25c61eea7
 
         // background shadow
         function hpbox() {
@@ -281,19 +261,11 @@
         
        
         //tween to move image
-<<<<<<< HEAD
         tween_mob1 = this.tweens.add({
           targets: Cyclope,
           x: 300,
           y: 180,
           ease: 'Power2',
-=======
-        tween = this.tweens.add({
-          targets: mob,
-          x: 250,
-          y: 40,
-          ease: 'Power1',
->>>>>>> 2a8b50baf5884f08d08d2152011ca0d25c61eea7
           duration: 50,
           yoyo: true,
           repeat: 3,
@@ -349,7 +321,6 @@
         btn_deffence.on('pointerdown', function (pointer) { 
           action_attack()
         });
-<<<<<<< HEAD
         
         //DB에서 스킬의 정보를 읽어오기
         //stage 정보 DB 만들기
@@ -360,8 +331,6 @@
         // 경험치를 충족해서 레벨업을하면 능력치가 올라감
         let rand_0_4
         let target = [tween_mob1, tween_mob2, tween_mob3, tween_mob4]
-=======
->>>>>>> 2a8b50baf5884f08d08d2152011ca0d25c61eea7
 
         skill_one.on('pointerdown', function (pointer) { 
           //  You can set the text proprety directly like this:
@@ -423,16 +392,8 @@
         }
         
       }
-      
-      
-        
-      
-
       function update(){
         
       }
-      
-      
-      
 </script>
 {% endblock script %}

@@ -164,7 +164,6 @@ function create() {
     let item, r, c;
 
     // table header
-
     // item을 테이블에 배치
     for (let r = 0, cnt = data.length; r < cnt; r++) {
       item = data[r];
@@ -311,10 +310,11 @@ function updatetScoreBoard(message) {
   scoreBoardPanel.layout();
 }
 
+let message = [];
 // socket listener
 chatSocket.onmessage = (e) => {
   let data = JSON.parse(e.data);
-  const message = data["message"];
+  message = data["message"];
   const type = data["type"];
   console.log(data);
   if (type == "attack") {
@@ -342,6 +342,23 @@ function move_mouth(da) {
     tmp_dist = Math.abs(parseInt(da.slice(-1)) - parseInt(da.slice(-2)));
   }
   return tmp_dist;
+}
+
+function partShot(str1, canvas) {
+  // 스크린샷
+  let image = canvas.toDataURL("image/jpeg");
+  console.log(image);
+  $.ajax({
+    url: "/mainapp/api/face/",
+    async: false,
+    type: "POST",
+    data: {
+      face: image,
+      csrfmiddlewaretoken: csrf_token,
+    },
+    datatype: "json",
+    headers: { "X-CSRFToken": csrf_token },
+  });
 }
 
 var distance_array = [];
@@ -385,7 +402,7 @@ video.addEventListener("play", () => {
     let context = canvas.getContext("2d");
     let src = new cv.Mat(video.height, video.width, cv.CV_8UC4);
     let dst = new cv.Mat(video.height, video.width, cv.CV_8UC1);
-    //context.drawImage(video, 0, 0, video.width, video.height);
+    context.drawImage(video, 0, 0, video.width, video.height);
     src.data.set(context.getImageData(0, 0, video.width, video.height).data);
     // faceapi.draw.drawDetections(canvas, resizedDetections); // 주석
     // faceapi.draw.drawFaceLandmarks(canvas, resizedDetections); // 주석
@@ -493,7 +510,7 @@ video.addEventListener("play", () => {
       // 수정된 부분
       if (capture_count_right <= 3) {
         // 웃긴 얼굴 캡쳐, 너무 많이 다운로드되어 일단은 저장개수를 변수 한개로 임시조정해두었습니다
-        // PartShot(for_name)
+        partShot(for_name, canvas);
         capture_count_right++;
       }
     }
@@ -509,7 +526,7 @@ video.addEventListener("play", () => {
       right_skill_count++;
       // 수정된 부분
       if (capture_count_left <= 3) {
-        // PartShot(for_name)
+        partShot(for_name, canvas);
         capture_count_left++;
       }
     }
@@ -561,7 +578,7 @@ video.addEventListener("play", () => {
       attackAction();
       console.log("입 스킬발동" + String(mouth_skill_count) + "번!");
       if (capture_count_mouth <= 3) {
-        // PartShot(for_name)
+        partShot(for_name, canvas);
         capture_count_mouth++;
       }
       count2++;
@@ -582,7 +599,6 @@ video.addEventListener("play", () => {
 
       // end of game
       setTimeout(() => {
-        //video.removeEventListener("play");
         night.stop();
         video.pause();
         boss.play("boss_die").once("animationcomplete", () => {
@@ -591,7 +607,8 @@ video.addEventListener("play", () => {
             right_eye: right_skill_count,
             mouth: mouth_skill_count,
           };
-          window.location.href = `/mainapp/result?left_eye=${left_skill_count}&right_eye=${right_skill_count}&mouth=${mouth_skill_count}`;
+
+          showFinalScore(message);
         });
       }, 1000 * GAME_TIME + 1000);
     }
@@ -599,3 +616,36 @@ video.addEventListener("play", () => {
     document.querySelector(".mask").style.visibility = "hidden";
   }, 5000); // 딜레이로 5초 뒤 시작
 });
+
+function showFinalScore(scoreData) {
+  tableElement = "";
+  for (let row = 0; row < scoreData.length; row++) {
+    const oneScore = scoreData[row];
+    tableElement += `<tr>
+                      <th>${oneScore[0]}</th>
+                      <th>${oneScore[1]}</th>
+                    </tr>`;
+  }
+
+  cuteAlert({
+    type: "success",
+    title: "GAME END",
+    message: `당신은 ${
+      scoreData.map((arr) => arr[0]).indexOf(player_name) + 1
+    }등을 하셨습니다`,
+    img: `<table class='table'>
+            <thead class='table-dark'>
+              <tr>
+                <th>player</th>
+                <th>score</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${tableElement}
+            </tbody>
+          </table>`,
+    buttonText: "NEXT",
+  }).then(() => {
+    window.location.href = `/mainapp/result?left_eye=${left_skill_count}&right_eye=${right_skill_count}&mouth=${mouth_skill_count}`;
+  });
+}

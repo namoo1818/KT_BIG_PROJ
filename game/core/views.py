@@ -6,6 +6,7 @@ from .serializers import CurrentUserSerializer, AchievementSerializer, AchieveUs
 import os
 from django.conf import settings
 
+
 # Create your views here.
 def index(request):
   return render(request, 'core/unity_test.html')
