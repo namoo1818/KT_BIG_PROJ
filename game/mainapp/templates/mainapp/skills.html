@@ -20,11 +20,10 @@
         this.load.image('noseui', "{% static '/resource/ui/skills/ui/코.png'%}")
         this.load.image('mouthui', "{% static '/resource/ui/skills/ui/입.png'%}")
         this.load.image('Rect', "{% static '/resource/ui/skills/ui/Rect.png'%}")
-
+        this.load.image('confirm', "{% static '/resource/ui/skills/ui/확정.png'%}")
     }
 
     function create(){
-
 
         skills = this.physics.add.staticGroup();
         ui = this.physics.add.staticGroup();
@@ -41,6 +40,9 @@
         back.on('pointerdown', function(event){
             location.replace('http://localhost:8000/mainapp/main')
         })
+
+        confirm = this.add.image(150,190,'confirm').setScale(0.60).setInteractive({cursor:'pointer'});
+        confirm.visible = false
 
         //ui
         eyeui = ui.create(65,520, 'eyeui').setScale(0.35).setInteractive();
@@ -71,28 +73,69 @@
         skill5_rect.visible = false
         skill6_rect.visible = false
 
+        skill_count = [false, false, false, false, false, false]
+
+        // true 세기
+        let count = 0;
+        for(let loop = 0; loop < skill_count.length; loop++) {
+        if(skill_count[loop] === true)  {
+            count++;
+            }
+        } console.log(`count : ${count}`);
+
         this.input.on('gameobjectdown', function(pointer, gameObject){
             if(gameObject==skill1){
-                skill1_rect.visible = true;
+                skill1_rect.visible= !skill1_rect.visible;
+                skill_count[0] = !skill_count[0];
             }
-
             if(gameObject==skill2){
-                skill2_rect.visible = true;
+                skill2_rect.visible= !skill2_rect.visible;
+                skill_count[1] = !skill_count[1];
             }
             if(gameObject==skill3){
-                skill3_rect.visible = true;
+                skill3_rect.visible= !skill3_rect.visible;
+                skill_count[2] = !skill_count[2];
             }
             if(gameObject==skill4){
-                skill4_rect.visible = true;
+                skill4_rect.visible= !skill4_rect.visible;
+                skill_count[3] = !skill_count[3];
             }
             if(gameObject==skill5){
-                skill5_rect.visible = true;
+                skill5_rect.visible= !skill5_rect.visible;
+                skill_count[4] = !skill_count[4];
             }
             if(gameObject==skill6){
-                skill6_rect.visible = true;
+                skill6_rect.visible= !skill6_rect.visible;
+                skill_count[5] = !skill_count[5];
             }
-        })
 
+            // 선택된 스킬 수 세기
+            let count = 0;
+            for(let loop = 0; loop < skill_count.length; loop++) {
+            if(skill_count[loop] === true)  {
+                count++;
+                }
+            } console.log(`count : ${count}`);
+
+            if(count>=3){
+                console.log('선택완료');
+
+                confirm.visible = true
+                confirm.on('pointerover', function(event){
+                    this.setTint(0x50bcdf)
+                })
+                confirm.on('pointerout', function(event){
+                    this.clearTint()
+                })
+                confirm.on('pointerdown', function(event){
+                    location.replace('http://localhost:8000/mainapp/main')
+                })
+            } else {
+                confirm.visible = false
+            }
+
+        })
+        
         this.input.on('gameobjectdown', function(pointer, gameObject){
             if(gameObject==eyeui){choicetype(eyeui, typeui)}
             if(gameObject==noseui){choicetype(noseui, typeui)}
