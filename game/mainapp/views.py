@@ -44,7 +44,7 @@ def skills(request):
 def analysis(request):
   return render(request, 'mainapp/analysis.html')
   
-class ShopAPI(APIView):
+class shopAPI(APIView):
   def get(self, request):
     shop_list = Shop.objects.all()
     serializer = ShopSerializer(shop_list, many=True)
