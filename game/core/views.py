@@ -16,8 +16,8 @@ def recommend(request):
   return render(request, 'core/recommend.html', {'products': products})
 
 def analysis(request):
-  history = HistoryByDay.objects.all()
-  return render(request, 'mainapp/analysis.html', {'history': history})
+  analysis = HistoryByDay.objects.all()
+  return render(request, 'mainapp/analysis.html', {'analysis': analysis})
 
 def pve(request):
   return render(request, 'core/PvE.html')
