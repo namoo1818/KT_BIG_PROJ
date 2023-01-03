@@ -3,6 +3,7 @@
 {% block script %}
 <script src="{% static 'js/range.js' %}"></script>
 <script src="{% static 'js/math.js' %}"></script>
+<script src="{% static 'js/window.js' %}"></script>
 <script>
   let status = 'off_battle'
 
@@ -19,8 +20,8 @@
 
   var config = {
     type: Phaser.AUTO,
-    width: 300,
-    height: 600,
+    width: window_width,
+    height: window_height,
     physics: {
         default: 'arcade',
         arcade: {
@@ -47,7 +48,7 @@
     let skill_selector
 
       function preload(){
-        this.load.image('char', "{% static '/images/char_back.jpg'%}")
+        this.load.image('face', "{% static '/images/char_back.jpg'%}")
         this.load.image('attk_button', "{% static '/images/attack.png'%}")
         this.load.image('def_button', "{% static '/images/defence.png'%}")
         
@@ -56,7 +57,7 @@
         
         
         //background
-        this.load.spritesheet('map', "{% static '/assets/background/TilesetInteriorFloor.png'%}", { frameWidth: 160, frameHeight: 60 })
+        this.load.spritesheet('map', "{% static '/assets/tile/TilesetInteriorFloor.png'%}", { frameWidth: 160, frameHeight: 60 })
 
 
 
@@ -81,14 +82,8 @@
         this.load.image('skill6', "{% static '/resource/ui/skills/skills/skill6.png'%}")
 
 
-        //health Bar image
-        this.load.image('left-cap', "{% static '/health/barHorizontal_green_left.png'%}")
-        this.load.image('middle', "{% static '/health/barHorizontal_green_mid.png'%}")
-        this.load.image('right-cap', "{% static '/health/barHorizontal_green_right.png'%}")
 
-        this.load.image('left-cap-shadow', "{% static '/health/barHorizontal_shadow_left.png'%}")
-        this.load.image('middle-shadow', "{% static '/health/barHorizontal_shadow_mid.png'%}")
-        this.load.image('right-cap-shadow', "{% static '/health/barHorizontal_shadow_right.png'%}")
+
         
         
 
@@ -96,14 +91,14 @@
       let Monsters = []
       
       let mob_move = false
-      
       function create(){
 
-        this.add.image(150,300,'background')
+        this.add.image(200, 250,'background').setScale(10)
+        console.log(window_height)
         //health bar create
         let y = 250
         let x = 150
-        this.add.image(150, 100, 'map').setScale(2)
+        this.add.image(window_width-200, 100, 'map').setScale(2.5)
 
 
         // mob
@@ -206,8 +201,9 @@
 
 
         //hp text
-        var hp_text = this.add.text(230,220, '100/100', { fontFamily: 'Arial', fontSize: 14, color: '#00ff00' });
         let current_hp = 100
+        var hp_text = this.add.text(230, 72, current_hp + '/100', { fontFamily: 'Arial', fontSize: 12, color: '#00ff00' });
+
         
         this.add.image(40,200,'char').setScale(0.05).setInteractive({cursor:'pointer'})
         //mob = this.add.sprite(240, 200, 'enemy').setScale(0.06);
@@ -369,7 +365,12 @@
         skill_one.on('pointerdown', function (pointer) { 
           //  You can set the text proprety directly like this:
           //hp_text.text = '90/100';
-          current_hp -= 10;
+          if(current_hp >= 10){
+            current_hp -= 10;
+          }else{
+            
+          }
+          
           
           //  Or use the setText method if you need method chaining:
           hp_text.setText(current_hp+'/100');
