@@ -98,7 +98,7 @@ class HistoryByDay(models.Model):
     date = models.DateField(auto_now_add=True)
     mouthCnt = models.IntegerField(default=0)
     eyeCnt = models.IntegerField(default=0)
-
+    
     def __str__(self):
         return self.user.username + '/' + str(self.date)
 
