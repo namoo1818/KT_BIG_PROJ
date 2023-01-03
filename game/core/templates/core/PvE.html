@@ -38,7 +38,10 @@
       update:update,
     },
     scale: {
-        mode: Phaser.Scale.ScaleModes.FIT
+        mode: Phaser.Scale.ScaleModes.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 300,
+        height: 600,
     }
   }
     let tween
@@ -48,7 +51,7 @@
     let skill_selector
 
       function preload(){
-        this.load.image('face', "{% static '/images/char_back.jpg'%}")
+        this.load.image('char', "{% static '/images/char_back.jpg'%}")
         this.load.image('attk_button', "{% static '/images/attack.png'%}")
         this.load.image('def_button', "{% static '/images/defence.png'%}")
         
@@ -98,7 +101,7 @@
         //health bar create
         let y = 250
         let x = 150
-        this.add.image(window_width-200, 100, 'map').setScale(2.5)
+        this.add.image(window_width/2, window_height/7, 'map').setScale(2.5)
 
 
         // mob
@@ -157,19 +160,19 @@
     
       
 
-      Cyclope = this.add.sprite(240, 200, 'Cyclope')
+      Cyclope = this.add.sprite(window_width/1.64, window_height/4.2, 'Cyclope')
       Cyclope.setScale(1);
       Cyclope.play('mob1_stable');
 
-      Cyclope2 = this.add.sprite(280, 200, 'Cyclope2')
+      Cyclope2 = this.add.sprite(window_width/2.04, window_height/4.2, 'Cyclope2')
       Cyclope2.setScale(1);
       Cyclope2.play('mob2_stable');
 
-      Axolot = this.add.sprite(260, 200, 'Axolot')
+      Axolot = this.add.sprite(window_width/1.5, window_height/4.2, 'Axolot')
       Axolot.setScale(1);
       Axolot.play('mob3_stable');
 
-      Axolot2 = this.add.sprite(220, 200, 'Cyclope2')
+      Axolot2 = this.add.sprite(window_width/1.84, window_height/4.2, 'Cyclope2')
       Axolot2.setScale(1);
       Axolot2.play('mob4_stable');
 
@@ -202,7 +205,7 @@
 
         //hp text
         let current_hp = 100
-        var hp_text = this.add.text(230, 72, current_hp + '/100', { fontFamily: 'Arial', fontSize: 12, color: '#00ff00' });
+        let hp_text = this.add.text(window_width/1.64, window_height/3.8, current_hp + '/100', { fontFamily: 'Arial', fontSize: 12, color: '#00ff00' });
 
         
         this.add.image(40,200,'char').setScale(0.05).setInteractive({cursor:'pointer'})
