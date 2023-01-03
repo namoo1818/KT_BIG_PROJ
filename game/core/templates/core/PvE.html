@@ -3,13 +3,14 @@
 {% block script %}
 <script src="{% static 'js/range.js' %}"></script>
 <script src="{% static 'js/math.js' %}"></script>
+<script src="{% static 'js/window.js' %}"></script>
 <script>
   let status = 'off_battle'
   
   var config = {
     type: Phaser.AUTO,
-    width: 300,
-    height: 600,
+    width: window_width,
+    height: window_height,
     physics: {
         default: 'arcade',
         arcade: {
@@ -26,7 +27,10 @@
       update:update,
     },
     scale: {
-        mode: Phaser.Scale.ScaleModes.FIT
+        mode: Phaser.Scale.ScaleModes.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 300,
+        height: 600,
     }
   }
     let tween
@@ -36,16 +40,15 @@
     let skill_selector
 
       function preload(){
-        this.load.image('face', "{% static '/images/char_back.jpg'%}")
+        this.load.image('char', "{% static '/images/char_back.jpg'%}")
         this.load.image('attk_button', "{% static '/images/attack.png'%}")
         this.load.image('def_button', "{% static '/images/defence.png'%}")
-        this.load.image('enemy', "{% static '/images/mob.png'%}")
         this.load.image('background', "{% static '/images/background.jpg'%}")
         this.load.image('hp', "{% static '/images/hp.png'%}")
         
         
         //background
-        this.load.spritesheet('map', "{% static '/assets/background/TilesetInteriorFloor.png'%}", { frameWidth: 160, frameHeight: 60 })
+        this.load.spritesheet('map', "{% static '/assets/tile/TilesetInteriorFloor.png'%}", { frameWidth: 160, frameHeight: 60 })
 
 
 
@@ -70,14 +73,8 @@
         this.load.image('skill6', "{% static '/resource/ui/skills/skills/skill6.png'%}")
 
 
-        //health Bar image
-        this.load.image('left-cap', "{% static '/health/barHorizontal_green_left.png'%}")
-        this.load.image('middle', "{% static '/health/barHorizontal_green_mid.png'%}")
-        this.load.image('right-cap', "{% static '/health/barHorizontal_green_right.png'%}")
 
-        this.load.image('left-cap-shadow', "{% static '/health/barHorizontal_shadow_left.png'%}")
-        this.load.image('middle-shadow', "{% static '/health/barHorizontal_shadow_mid.png'%}")
-        this.load.image('right-cap-shadow', "{% static '/health/barHorizontal_shadow_right.png'%}")
+
         
         
 
@@ -87,11 +84,12 @@
       let mob_move = false
       function create(){
 
-        this.add.image(150,300,'background')
+        this.add.image(200, 250,'background').setScale(10)
+        console.log(window_height)
         //health bar create
         let y = 250
         let x = 150
-        this.add.image(150, 100, 'map').setScale(2)
+        this.add.image(window_width/2, window_height/7, 'map').setScale(2.5)
 
 
         // mob
@@ -150,19 +148,19 @@
     
       
 
-      Cyclope = this.add.sprite(240, 200, 'Cyclope')
+      Cyclope = this.add.sprite(window_width/1.64, window_height/4.2, 'Cyclope')
       Cyclope.setScale(1);
       Cyclope.play('mob1_stable');
 
-      Cyclope2 = this.add.sprite(280, 200, 'Cyclope2')
+      Cyclope2 = this.add.sprite(window_width/2.04, window_height/4.2, 'Cyclope2')
       Cyclope2.setScale(1);
       Cyclope2.play('mob2_stable');
 
-      Axolot = this.add.sprite(260, 200, 'Axolot')
+      Axolot = this.add.sprite(window_width/1.5, window_height/4.2, 'Axolot')
       Axolot.setScale(1);
       Axolot.play('mob3_stable');
 
-      Axolot2 = this.add.sprite(220, 200, 'Cyclope2')
+      Axolot2 = this.add.sprite(window_width/1.84, window_height/4.2, 'Cyclope2')
       Axolot2.setScale(1);
       Axolot2.play('mob4_stable');
 
@@ -194,10 +192,11 @@
 
 
         //hp text
-        var hp_text = this.add.text(230, 72, '100/100', { fontFamily: 'Arial', fontSize: 14, color: '#00ff00' });
         let current_hp = 100
+        var hp_text = this.add.text(230, 72, current_hp + '/100', { fontFamily: 'Arial', fontSize: 12, color: '#00ff00' });
+
         
-        this.add.image(80,400,'face').setScale(0.08).setInteractive({cursor:'pointer'})
+        this.add.image(80,400,'char').setScale(0.08).setInteractive({cursor:'pointer'})
         mob = this.add.sprite(240, 50, 'enemy').setScale(0.1);
         //this.add.image(240,50,'enemy').setScale(0.1).setInteractive({cursor:'pointer'})
         //this.add.image(250,80,'hp').setScale(0.07).setInteractive({cursor:'pointer'})
@@ -210,6 +209,15 @@
 
         skill_three = this.add.image(240,500, 'skill3').setScale(0.5).setInteractive();
         skill_three.visible =false
+
+        skill_four = this.add.image(80,500, 'skill4').setScale(0.5).setInteractive();
+        skill_four.visible =false
+
+        skill_five = this.add.image(160,500, 'skill5').setScale(0.5).setInteractive();
+        skill_five.visible =false
+
+        skill_six = this.add.image(240,500, 'skill6').setScale(0.5).setInteractive();
+        skill_six.visible =false
         //MOUSE INTERACTIONS
   
         //click colour tiles
@@ -241,12 +249,15 @@
         }
 
         function back(){
-          btn_attack.visible = true 
-          btn_deffence.visible = true 
-          skill_one.visible = false
-          skill_two.visible = false
-          skill_three.visible = false
-          back_button.visible = false
+            btn_attack.visible = true 
+            btn_deffence.visible = true 
+            skill_one.visible = false
+            skill_two.visible = false
+            skill_three.visible = false
+            skill_five.visible = false
+            skill_six.visible = false
+            skill_four.visible = false
+            back_button.visible = false
         }
 
         function action_attack(){
@@ -258,7 +269,16 @@
           back_button.visible = true
           
         }
-        
+        function action_deffence(){
+            btn_attack.visible = false 
+            btn_deffence.visible = false 
+            skill_five.visible = true
+            skill_six.visible = true
+            skill_four.visible = true
+            back_button.visible = true
+            
+          }
+       
        
         //tween to move image
         tween_mob1 = this.tweens.add({
@@ -319,7 +339,7 @@
           });
 
         btn_deffence.on('pointerdown', function (pointer) { 
-          action_attack()
+          action_deffence()
         });
         
         //DB에서 스킬의 정보를 읽어오기
@@ -335,7 +355,13 @@
         skill_one.on('pointerdown', function (pointer) { 
           //  You can set the text proprety directly like this:
           //hp_text.text = '90/100';
-          current_hp -= 10;
+
+          if(current_hp >= 10){
+            current_hp -= 10;
+          }else{
+            
+          }
+          
           //  Or use the setText method if you need method chaining:
           hp_text.setText(current_hp+'/100');
           use_skill()
