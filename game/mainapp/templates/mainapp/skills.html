@@ -3,12 +3,21 @@
 {% block script %}
 <script src={% static 'js/window.js' %}></script>
 <script>
+    var skillLen = 2
+    var Wcount = 1
     function preload(){
         this.load.scenePlugin({
             key: 'rexuiplugin',
             url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
             sceneKey: 'rexUI'
         })
+
+        
+        this.load.image('mainline', "{% static '/resource/ui/main/mainline.png'%}")
+        this.load.image('home', "{% static '/resource/ui/main/home.png'%}")
+        this.load.image('store', "{% static '/resource/ui/main/store.png'%}")
+        this.load.image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
+        this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
 
         //skills
         this.load.image('skill1', "{% static '/resource/ui/skills/skills/skill1.png'%}")
@@ -17,100 +26,197 @@
         this.load.image('skill4', "{% static '/resource/ui/skills/skills/skill4.png'%}")
         this.load.image('skill5', "{% static '/resource/ui/skills/skills/skill5.png'%}")
         this.load.image('skill6', "{% static '/resource/ui/skills/skills/skill6.png'%}")
+        this.load.image('text', "{% static '/resource/ui/skills/ui/text.png'%}")
+        this.load.image('layout', "{% static '/resource/ui/skills/ui/layout.png'%}")
+        this.load.image('confirm', "{% static '/resource/ui/skills/ui/button.png'%}")
 
         //ui
-        this.load.image('back', "{% static '/resource/ui/back2.png'%}")
-        this.load.image('eyeui', "{% static '/resource/ui/skills/ui/눈.png'%}")
-        this.load.image('noseui', "{% static '/resource/ui/skills/ui/코.png'%}")
-        this.load.image('mouthui', "{% static '/resource/ui/skills/ui/입.png'%}")
-        this.load.image('Rect', "{% static '/resource/ui/skills/ui/Rect.png'%}")
-        this.load.image('confirm', "{% static '/resource/ui/skills/ui/확정.png'%}")
+        
     }
 
     function create(){
-
-        this.add.rectangle(window_width/2, window_height*0.4, window_width*0.8, window_height*0.65, 0xD9D9D9)
-        back = this.add.image(30,30,'back').setInteractive({cursor:'pointer'});
-        back.on('pointerover', function(event){
-            this.setTint(0x50bcdf)
-        })
-        back.on('pointerout', function(event){
-            this.clearTint()
-        })
-        back.on('pointerdown', function(event){
-            window.history.back()
-        })
-
-        //confirm = this.add.image(150,190,'confirm').setScale(0.60).setInteractive({cursor:'pointer'});
-        //confirm.visible = false
-
         //ui
-        eyeui = this.add.image(window_width/4*1,window_height*0.83, 'eyeui').setScale(0.35).setInteractive();
-        noseui = this.add.image(window_width/2,window_height*0.83, 'noseui').setScale(0.35).setInteractive();
-        mouthui = this.add.image(window_width/4*3,window_height*0.83, 'mouthui').setScale(0.35).setInteractive();
-        typeui = [eyeui, noseui, mouthui];
 
+        var text = this.add.image(110,50,'text')
+
+        this.add.image(window_width/2, window_height+30, 'mainline')
+
+        var background = this.add.image(window_width/2, 220, 'background').setScale(0.4)
+
+        var home = this.add.image(window_width*0.17,window_height-36, 'home').setInteractive({cursor:'pointer'})
+
+        var analysis = this.add.image(window_width*0.4,window_height-36,'analysis').setInteractive({cursor:'pointer'})
+
+        var store = this.add.image(window_width*0.63,window_height-37,'store').setInteractive({cursor:'pointer'})
+
+        var exit = this.add.image(window_width*0.85, window_height-36, 'logout').setInteractive({cursor:'pointer'})
+
+        this.add.image(window_width/2, window_height*0.45, 'layout')
         //skills
-        skill1 = this.add.image(window_width*0.3,350, 'skill1').setScale(0.7).setInteractive();
-        skill2 = this.add.image(window_width*0.5,350, 'skill2').setScale(0.7).setInteractive();
-        skill3 = this.add.image(window_width*0.7,350, 'skill3').setScale(0.7).setInteractive();
-        skill4 = this.add.image(window_width*0.3,430, 'skill4').setScale(0.7).setInteractive();
-        skill5 = this.add.image(window_width*0.5,430, 'skill5').setScale(0.7).setInteractive();
-        skill6 = this.add.image(window_width*0.7,430, 'skill6').setScale(0.7).setInteractive();
+        skill1 = this.add.image(window_width*0.24,window_height*0.292, 'skill1').setScale(0.9).setInteractive()
+        skill2 = this.add.image(window_width*0.5,window_height*0.292, 'skill2').setScale(0.9).setInteractive()
+        skill3 = this.add.image(window_width*0.754,window_height*0.29, 'skill3').setScale(0.9).setInteractive()
+        skill4 = this.add.image(window_width*0.24,window_height*0.495, 'skill4').setScale(0.85).setInteractive()
+        skill5 = this.add.image(window_width*0.498,window_height*0.491, 'skill5').setScale(0.9).setInteractive()
+        skill6 = this.add.image(window_width*0.754,window_height*0.491, 'skill6').setScale(0.9).setInteractive()
         s = [skill1, skill2, skill3, skill4, skill5, skill6];
 
-        skill1_rect = this.add.image(window_width*0.3, 350, 'Rect').setScale(0.9);
-        skill2_rect = this.add.image(window_width*0.5, 350, 'Rect').setScale(0.9);
-        skill3_rect = this.add.image(window_width*0.7, 350, 'Rect').setScale(0.9);
-        skill4_rect = this.add.image(window_width*0.3, 430, 'Rect').setScale(0.9);
-        skill5_rect = this.add.image(window_width*0.5, 430, 'Rect').setScale(0.9);
-        skill6_rect = this.add.image(window_width*0.7, 430, 'Rect').setScale(0.9);
+        confirm = this.add.image(window_width*0.8,window_height*0.83,'confirm').setScale(0.4).setInteractive()
 
-        confirm = this.rexUI.add.roundRectangle(window_width/2,window_height*0.25,150,70,7,0xed2b45).setInteractive({cursor:'pointer'})
-        confirmText = this.add.text(window_width*0.45,window_height*0.24, "확정", {color:'white', font:'450 20px Arial'})
+        var b1 = this.add.circle(91, window_height*0.731, 40, 0xffffff)
+        var s1 = this.add.image(91, window_height*0.731, 'skill1')
+
+        var b2 = this.add.circle(187, window_height*0.731, 40, 0xffffff)
+        var s2 = this.add.image(187, window_height*0.731, 'skill1')
+        
+        var b3 = this.add.circle(285, window_height*0.731, 40, 0xffffff)
+        var s3 = this.add.image(285, window_height*0.731, 'skill1')
+
+        b1.visible=false
+        s1.visible=false
+        b2.visible=false
+        s2.visible=false
+        b3.visible=false
+        s3.visible=false
+
         confirm.visible=false
-        confirmText.visible=false
-
-        skill1_rect.visible = false
-        skill2_rect.visible = false
-        skill3_rect.visible = false
-        skill4_rect.visible = false
-        skill5_rect.visible = false
-        skill6_rect.visible = false
+        
 
         skill_count = [false, false, false, false, false, false]
 
         // true 세기
-        let count = 0;
+        let count = 1;
         for(let loop = 0; loop < skill_count.length; loop++) {
         if(skill_count[loop] === true)  {
             count++;
             }
-        } console.log(`count : ${count}`);
+        };
 
         this.input.on('gameobjectdown', function(pointer, gameObject){
             if(gameObject==skill1){
-                skill1_rect.visible= !skill1_rect.visible;
+                if(Wcount==1){
+                    s1.setTexture('skill1')
+                    s1.visible=true
+                    b1.visible=true
+                    Wcount=2
+                }
+                else if(Wcount==2){
+                    s2.setTexture('skill1')
+                    s2.visible=true
+                    b2.visible=true
+                    Wcount=3
+                }
+                else if(Wcount==3){
+                    s3.setTexture('skill1')
+                    s3.visible=true
+                    b3.visible=true
+                    Wcount=4
+                }
                 skill_count[0] = !skill_count[0];
             }
             if(gameObject==skill2){
-                skill2_rect.visible= !skill2_rect.visible;
+                if(Wcount==1){
+                    s1.setTexture('skill2')
+                    s1.visible=true
+                    b1.visible=true
+                    Wcount=2
+                }
+                else if(Wcount==2){
+                    s2.setTexture('skill2')
+                    s2.visible=true
+                    b2.visible=true
+                    Wcount=3
+                }
+                else if(Wcount==3){
+                    s3.setTexture('skill2')
+                    s3.visible=true
+                    b3.visible=true
+                    Wcount=4
+                }
                 skill_count[1] = !skill_count[1];
             }
             if(gameObject==skill3){
-                skill3_rect.visible= !skill3_rect.visible;
+                if(Wcount==1){
+                    s1.setTexture('skill3')
+                    s1.visible=true
+                    b1.visible=true
+                    Wcount=2
+                }
+                else if(Wcount==2){
+                    s2.setTexture('skill3')
+                    s2.visible=true
+                    b2.visible=true
+                    Wcount=3
+                }
+                else if(Wcount==3){
+                    s3.setTexture('skill3')
+                    s3.visible=true
+                    b3.visible=true
+                    Wcount=4
+                }
                 skill_count[2] = !skill_count[2];
             }
             if(gameObject==skill4){
-                skill4_rect.visible= !skill4_rect.visible;
+                if(Wcount==1){
+                    s1.setTexture('skill4')
+                    s1.visible=true
+                    b1.visible=true
+                    Wcount=2
+                }
+                else if(Wcount==2){
+                    s2.setTexture('skill4')
+                    s2.visible=true
+                    b2.visible=true
+                    Wcount=3
+                }
+                else if(Wcount==3){
+                    s3.setTexture('skill4')
+                    s3.visible=true
+                    b3.visible=true
+                    Wcount=4
+                }
                 skill_count[3] = !skill_count[3];
             }
             if(gameObject==skill5){
-                skill5_rect.visible= !skill5_rect.visible;
+                if(Wcount==1){
+                    s1.setTexture('skill5')
+                    s1.visible=true
+                    b1.visible=true
+                    Wcount=2
+                }
+                else if(Wcount==2){
+                    s2.setTexture('skill5')
+                    s2.visible=true
+                    b2.visible=true
+                    Wcount=3
+                }
+                else if(Wcount==3){
+                    s3.setTexture('skill5')
+                    s3.visible=true
+                    b3.visible=true
+                    Wcount=4
+                }
                 skill_count[4] = !skill_count[4];
             }
             if(gameObject==skill6){
-                skill6_rect.visible= !skill6_rect.visible;
+                if(Wcount==1){
+                    s1.setTexture('skill6')
+                    s1.visible=true
+                    b1.visible=true
+                    Wcount=2
+                }
+                else if(Wcount==2){
+                    s2.setTexture('skill6')
+                    s2.visible=true
+                    b2.visible=true
+                    Wcount=3
+                }
+                else if(Wcount==3){
+                    s3.setTexture('skill6')
+                    s3.visible=true
+                    b3.visible=true
+                    Wcount=4
+                }
                 skill_count[5] = !skill_count[5];
             }
 
@@ -120,13 +226,10 @@
             if(skill_count[loop] === true)  {
                 count++;
                 }
-            } console.log(`count : ${count}`);
+            };
 
             if(count==3){
-                console.log('선택완료');
-
                 confirm.visible = true
-                confirmText.visible=true
                 confirm.on('pointerover', function(event){
                     this.setTint(0x50bcdf)
                 })
@@ -138,25 +241,9 @@
                 })
             } else {
                 confirm.visible = false
-                confirmText.visible=false
             }
 
         })
-        
-        this.input.on('gameobjectdown', function(pointer, gameObject){
-            if(gameObject==eyeui){choicetype(eyeui, typeui)}
-            if(gameObject==noseui){choicetype(noseui, typeui)}
-            if(gameObject==mouthui){choicetype(mouthui, typeui)}
-        })
-
-        function choicetype(icon, array){
-            for(var i=0;i<array.length;i++){
-                icon.setTint(0x50bcdf);
-                if(icon!=array[i]){
-                    array[i].clearTint();
-                }
-            }
-        }
     }
 
     
