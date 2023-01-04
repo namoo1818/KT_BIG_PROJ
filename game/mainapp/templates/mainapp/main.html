@@ -6,7 +6,6 @@
     let achieveData;
     let achieveUser;
     let dic_onoff = -1; // dic panel을 관리하기위한 전역변수
-    let achievement_onoff = -1; // achievement panel을 관리하기위한 전역변수
     let setting_onoff = -1
     let name
     let profile
@@ -34,6 +33,7 @@
           .then(res=>res.json())
           .then((data)=>{
             name = String(data.username)
+            console.log(data)
             profile = data.profile_image
            })
 
@@ -61,10 +61,7 @@
         this.add.text(window_width/2-(window_width*0.09), 120, '캐릭터', {color:'black', font:'450 20px Arial'})
 
         var dic = this.rexUI.add.roundRectangle(60,220,100,43,7,0xD9D9D9).setInteractive({cursor:'pointer'})
-        this.add.text(28, 212, '백과사전', {color:'black', font:'450 16px Arial'})
-
-        var achievement = this.rexUI.add.roundRectangle(60,270,100,43,7,0xD9D9D9).setInteractive({cursor:'pointer'})
-        this.add.text(43, 262, '업적', {color:'black', font:'450 16px Arial'})
+        this.add.text(28, 212, '설문조사', {color:'black', font:'450 16px Arial'})
 
         var start = this.add.circle(window_width-70,window_height-70,50,50, 0x54717a).setInteractive({cursor:'pointer'})
         this.add.text(window_width-113, window_height-80, '게임 시작', {color:'black', font:'450 20px Arial'})
@@ -240,44 +237,13 @@
           this.setFillStyle(0xD9D9D9)
         })
         dic.on('pointerdown', function(event){
-          if(achievement_onoff==1){
-            panel2.setX(-150)
-            achievement_onoff=-1
-            panel1.setX(window_width/2)
-            dic_onoff=1
-          }
-          else if(dic_onoff==1){
-            panel1.setX(-150)
-            dic_onoff=-1
-
-
-          }
-          else{
-            panel1.setX(window_width/2)
-            dic_onoff=1
-          }
-        })
-
-        achievement.on('pointerover', function(event){
-          this.setFillStyle(0x50bcdf)
-        })
-        achievement.on('pointerout', function(event){
-          this.setFillStyle(0xD9D9D9)
-        })
-        achievement.on('pointerdown', function(event){
           if(dic_onoff==1){
             panel1.setX(-150)
             dic_onoff=-1
-            panel2.setX(window_width/2)
-            achievement_onoff=1
-          }
-          else if(achievement_onoff==1){
-            panel2.setX(-150)
-            achievement_onoff=-1
           }
           else{
-            panel2.setX(window_width/2)
-            achievement_onoff=1
+            panel1.setX(window_width/2)
+            dic_onoff=1
           }
         })
 
