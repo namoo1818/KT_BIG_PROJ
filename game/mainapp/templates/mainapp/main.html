@@ -3,119 +3,285 @@
 {% block script %}
 <script src={% static 'js/window.js' %}></script>
 <script>
+    const COLOR_PRIMARY = 0xF5F5F5;
+    const COLOR_LIGHT = 0xD0CCCC;
+    const COLOR_DARK = 0x260e04;
     let achieveData;
     let achieveUser;
-    let dic_onoff = -1; // dic panel을 관리하기위한 전역변수
+    let survey_onoff = -1; // survey panel을 관리하기위한 전역변수
     let setting_onoff = -1
     let name
     let profile
-      async function preload(){
-        this.load.scenePlugin({
-          key: 'rexuiplugin',
-          url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
-          sceneKey: 'rexUI'
-        })
-        this.load.plugin('rexfilechooserplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexfilechooserplugin.min.js', true)
-        this.load.plugin('rexcanvasplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcanvasplugin.min.js', true)
 
-        // resource load
-        this.load.image('panel', "{% static '/resource/ui/background.jpg'%}")
-        this.load.image('sound_on', "{% static '/resource/ui/main/musicOn.png'%}")
-        this.load.image('sound_off', "{% static '/resource/ui/main/musicOff.png'%}")
-        this.load.image('exit', "{% static '/resource/ui/exitLeft.png'%}")
-        this.load.image('zoom', "{% static '/resource/ui/zoom.png'%}")
-        this.load.image('pveStart', "{% static '/resource/ui/main/pve.png'%}")
-        this.load.image('pvpStart', "{% static '/resource/ui/main/pvp.png'%}")
+    var createPanel = function (scene, data, state) {
+      var sizer = scene.rexUI.add.sizer({
+          orientation: 'y',
+          space: { item: 10 }
+      })
+          .add(
+              createTable(scene, data, state, 3), // child
+              { expand: true }
+          ) 
+      return sizer;
+    }
 
-        this.load.audio('title_music', "{% static '/resource/bgm/title_music.mp3'%}")
+    var createTable = function (scene, data, key, columns) {
+    var capKey = key.charAt(0).toUpperCase() + key.slice(1);
+    var title = scene.rexUI.add.label({
+        orientation: 'x',
+        text: scene.add.text(0, 0, capKey, {color:'black', font:'450 16px Arial'}),
+      });
 
-        await fetch('http://localhost:8000/core/api/user')
-          .then(res=>res.json())
-          .then((data)=>{
-            name = String(data.username)
-            console.log(data)
-            profile = data.profile_image
-           })
+    var items = data[key];
+    var rows = Math.ceil(items.length / columns);
+    var table = scene.rexUI.add.gridSizer({
+        column: columns,
+        row: rows,
 
-        this.load.image('profile_image', profile)
-        
+        rowProportions: 1,
+        space: { column: 10, row: 10 },
+        name: key  // Search this name to get table back
+      });
+
+    var item, r, c;
+    var iconSize = 70;
+    for (var i = 0, cnt = items.length; i < cnt; i++) {
+        item = items[i];
+        r = i % columns;
+        c = (i - r) / columns;
+        table.add(
+            createIcon(scene, item, 50, 30),
+            r,
+            c,
+            'top',
+            0,
+            true
+          );
+        }
+      return scene.rexUI.add.sizer({
+          orientation: 'y',
+          space: { left: 15, right: 10, top: 10, bottom: 10, item: 10 }
+      })
+          .addBackground(
+              scene.rexUI.add.roundRectangle(0, 0, 0, 0, 0, undefined).setStrokeStyle(2, COLOR_LIGHT, 1)
+          )
+          .add(
+              title, // child
+              0, // proportion
+              'left', // align
+              0, // paddingConfig
+              true // expand
+          )
+          .add(table, // child
+              1, // proportion
+              'center', // align
+              0, // paddingConfig
+              true // expand
+          );
       }
+  // panel에 아이콘으로 아이템 이미지를 보여주기 위함 
+    var createIcon = function (scene, item, iconWidth, iconHeight) {
+      var label = scene.rexUI.add.label({
+        orientation: 'y',
+        icon : scene.rexUI.add.roundRectangle(0, 0, iconWidth, iconHeight, 5, 0xffffff).setStrokeStyle(1, 0x4f4f4f),
+        text: scene.add.text(0, 0, item.name, {color:'black', font:'14px Arial'}),
+
+        space: { top: 10, icon: 10,}
+      });
+      label.alpha=0.7
+      return label;
+    };
       
-      async function create(){ 
-        
-        this.bgm = this.sound.play("title_music", {loop:true})
-        var setting = this.add.image(35,35,'profile_image').setInteractive({cursor:'pointer'})
-        let circle = this.add.circle(35,35,25)
-        var exit = this.add.image(window_width-30, 75, 'exit').setInteractive({cursor:'pointer'})
+    async function preload(){
+      this.load.scenePlugin({
+        key: 'rexuiplugin',
+        url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+        sceneKey: 'rexUI'
+      })
+      this.load.plugin('rexfilechooserplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexfilechooserplugin.min.js', true)
+      this.load.plugin('rexcanvasplugin', 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexcanvasplugin.min.js', true)
 
-        var canvas = this.add.rexCanvas(35, 35, 50, 50).fill('black');
-        canvas.fitTo = (function (parent) {
-            var newSize = FitTo(this, parent, true);
-            this.setDisplaySize(newSize.width, newSize.height);
-        }).bind(canvas)
-        canvas.fitTo('profile_image')
+      // resource load
+      this.load.image('panel', "{% static '/resource/ui/background.jpg'%}")
+      this.load.image('sound_on', "{% static '/resource/ui/main/musicOn.png'%}")
+      this.load.image('sound_off', "{% static '/resource/ui/main/musicOff.png'%}")
+      this.load.image('exit', "{% static '/resource/ui/exitLeft.png'%}")
+      this.load.image('zoom', "{% static '/resource/ui/zoom.png'%}")
+      this.load.image('pveStart', "{% static '/resource/ui/main/pve.png'%}")
+      this.load.image('pvpStart', "{% static '/resource/ui/main/pvp.png'%}")
 
-        // 각종 UI 배치
+      this.load.audio('title_music', "{% static '/resource/bgm/title_music.mp3'%}")
 
-        var chr = this.rexUI.add.roundRectangle(window_width/2,130,210,100,7,0xD9D9D9).setInteractive({cursor:'pointer'})
-        this.add.text(window_width/2-(window_width*0.09), 120, '캐릭터', {color:'black', font:'450 20px Arial'})
-
-        var dic = this.rexUI.add.roundRectangle(60,220,100,43,7,0xD9D9D9).setInteractive({cursor:'pointer'})
-        this.add.text(28, 212, '설문조사', {color:'black', font:'450 16px Arial'})
-
-        var start = this.add.circle(window_width-70,window_height-70,50,50, 0x54717a).setInteractive({cursor:'pointer'})
-        this.add.text(window_width-113, window_height-80, '게임 시작', {color:'black', font:'450 20px Arial'})
-
-        var store = this.add.circle(window_width-45,window_height-170,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
-        this.add.text(window_width-60, window_height-180, '상점', {color:'black', font:'450 16px Arial'})
-
-        var skills = this.add.circle(window_width-140,window_height-140,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
-        this.add.text(window_width-155, window_height-150, '스킬', {color:'black', font:'450 16px Arial'})
-
-        var analysis = this.add.circle(window_width-170,window_height-45,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
-        this.add.text(window_width-185, window_height-55, '분석', {color:'black', font:'450 16px Arial'})
-
-        var namespace = this.rexUI.add.roundRectangle(window_width/2,30,170,40,3,0xB8DEEA)
-
-        let sound_off = this.add.image(window_width-30,30,'sound_off').setInteractive({cursor:'pointer'})
-        let sound_on = this.add.image(window_width-30,30,'sound_on').setInteractive({cursor:'pointer'})
-        let panel1 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
-        let panel2 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
-
-        var settingPanel = this.rexUI.add.roundRectangle(-150,90,150,50,7,0xffffff).setStrokeStyle(1, 0x4f4f4f).setInteractive({cursor:'pointer'})
-        var zoom = this.add.image(-150,90,'zoom').setScale(0.9).setInteractive({cursor:'pointer'})
-        var zoomText = this.add.text(-150,81,'사진 업로드',{color:'black', font:'450 16px Arial'})
-
-        var pveStart = this.add.image(window_width-70,window_height-97, 'pveStart').setInteractive({cursor:'pointer'})
-        var pveText = this.add.text(window_width-85,window_height-97, 'PVE', {color:'black', font:'450 16px Arial'})
-        var pvpStart = this.add.image(window_width-69,window_height-43, 'pvpStart').setInteractive({cursor:'pointer'})
-        var pvpText = this.add.text(window_width-85,window_height-58, 'PVP', {color:'black', font:'450 16px Arial'})
-        var line = this.add.line(window_width-70,window_height-67, 0, 0, 100, 0, 0xffffff)
-
-        var scene = this
-        zoom
-          .on('pointerdown', function () {
-              scene.plugins.get('rexfilechooserplugin').open({ accept: 'image/*', multiple:false })
-                  .then(function (result) {
-                      var files = result.files;
-                      if (files.length) {
-                          var url = URL.createObjectURL(files[0])
-                          canvas.loadFromURLPromise(url)
-                            .then(function () {
-                              URL.revokeObjectURL(url);
-                              canvas.fitTo(zoom)
-                              setting.visible=false
-                          })
-                      }
-                  })
+      await fetch('http://localhost:8000/core/api/user')
+        .then(res=>res.json())
+        .then((data)=>{
+          name = String(data.username)
+          profile = data.profile_image
           })
 
-          settingPanel.on('pointerdown', function(event){
-            settingPanel.setX(-150)
-            zoom.setX(-150)
-            zoomText.setX(-150)
-            setting_onoff=-1
-          })
+      this.load.image('profile_image', profile)
+      
+    }
+    
+    async function create(){ 
+      this.bgm = this.sound.play("title_music", {loop:true})
+      var setting = this.add.image(35,35,'profile_image').setInteractive({cursor:'pointer'})
+      let circle = this.add.circle(35,35,25)
+      var exit = this.add.image(window_width-30, 75, 'exit').setInteractive({cursor:'pointer'})
+
+      var canvas = this.add.rexCanvas(35, 35, 50, 50).fill('black');
+      canvas.fitTo = (function (parent) {
+          var newSize = FitTo(this, parent, true);
+          this.setDisplaySize(newSize.width, newSize.height);
+      }).bind(canvas)
+      canvas.fitTo('profile_image')
+
+      // 각종 UI 배치
+
+      var chr = this.rexUI.add.roundRectangle(window_width/2,130,210,100,7,0xD9D9D9).setInteractive({cursor:'pointer'})
+      this.add.text(window_width/2-(window_width*0.09), 120, '캐릭터', {color:'black', font:'450 20px Arial'})
+
+      var survey = this.rexUI.add.roundRectangle(60,window_height-40,70,43,7,0xD9D9D9).setInteractive({cursor:'pointer'})
+      this.add.text(32, window_height-47, '설문조사', {color:'black', font:'450 14px Arial'})
+
+      var start = this.add.circle(window_width-70,window_height-70,50,50, 0x54717a).setInteractive({cursor:'pointer'})
+      this.add.text(window_width-113, window_height-80, '게임 시작', {color:'black', font:'450 20px Arial'})
+
+      var store = this.add.circle(window_width-45,window_height-170,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
+      this.add.text(window_width-60, window_height-180, '상점', {color:'black', font:'450 16px Arial'})
+
+      var skills = this.add.circle(window_width-140,window_height-140,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
+      this.add.text(window_width-155, window_height-150, '스킬', {color:'black', font:'450 16px Arial'})
+
+      var analysis = this.add.circle(window_width-170,window_height-45,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
+      this.add.text(window_width-185, window_height-55, '분석', {color:'black', font:'450 16px Arial'})
+
+      var namespace = this.rexUI.add.roundRectangle(window_width/2,30,170,40,3,0xB8DEEA)
+
+      let sound_off = this.add.image(window_width-30,30,'sound_off').setInteractive({cursor:'pointer'})
+      let sound_on = this.add.image(window_width-30,30,'sound_on').setInteractive({cursor:'pointer'})
+      let panel1 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
+      let panel2 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
+
+      var settingPanel = this.rexUI.add.roundRectangle(-150,90,150,50,7,0xffffff).setStrokeStyle(1, 0x4f4f4f).setInteractive({cursor:'pointer'})
+      var zoom = this.add.image(-150,90,'zoom').setScale(0.9).setInteractive({cursor:'pointer'})
+      var zoomText = this.add.text(-150,81,'사진 업로드',{color:'black', font:'450 16px Arial'})
+
+      var pveStart = this.add.image(window_width-70,window_height-97, 'pveStart').setInteractive({cursor:'pointer'})
+      var pveText = this.add.text(window_width-85,window_height-97, 'PVE', {color:'black', font:'450 16px Arial'})
+      var pvpStart = this.add.image(window_width-69,window_height-43, 'pvpStart').setInteractive({cursor:'pointer'})
+      var pvpText = this.add.text(window_width-85,window_height-58, 'PVP', {color:'black', font:'450 16px Arial'})
+      var line = this.add.line(window_width-70,window_height-67, 0, 0, 100, 0, 0xffffff)
+
+      var scene = this
+      zoom
+        .on('pointerdown', function () {
+            scene.plugins.get('rexfilechooserplugin').open({ accept: 'image/*', multiple:false })
+                .then(function (result) {
+                    var files = result.files;
+                    if (files.length) {
+                        var url = URL.createObjectURL(files[0])
+                        canvas.loadFromURLPromise(url)
+                          .then(function () {
+                            URL.revokeObjectURL(url);
+                            canvas.fitTo(zoom)
+                            setting.visible=false
+                        })
+                    }
+                })
+        })
+
+        settingPanel.on('pointerdown', function(event){
+          settingPanel.setX(-150)
+          zoom.setX(-150)
+          zoomText.setX(-150)
+          setting_onoff=-1
+        })
+
+        var data = {설문조사:[
+          {name:'각질 케어'},
+          {name:'노폐물 제거'},
+          {name:'레포츠용'},
+          {name:'메이크업 베이스'},
+          {name:'모공 케어'},
+          {name:'미세먼지 세정'},
+          {name:'밀착력'},
+          {name:'부드러운 발림'},
+          {name:'브라이트닝'},
+          {name:'블랙헤드 케어'},
+          {name:'상쾌함'},
+          {name:'안티에이징'},
+          {name:'알콜프리'},
+          {name:'약산성'},
+          {name:'어린이겸용'},
+          {name:'영양공급'},
+          {name:'오일 프리'},
+          {name:'워터 프루프'},
+          {name:'유수분 밸선스'},
+          {name:'윤기 부여'},
+          {name:'자외선 차단'},
+          {name:'저자극'},
+          {name:'주름 케어'},
+          {name:'지속력'},
+          {name:'집중 케어'},
+          {name:'초미세먼지 세정'},
+          {name:'촉촉함'},
+          {name:'쿨링감'},
+          {name:'트러블 케어'},
+          {name:'사용성'},
+          {name:'피부 강화'},
+          {name:'피부결 정돈'},
+          {name:'피부 보호'},
+          {name:'피부 유연'},
+          {name:'피부 진정'},
+          {name:'피부 탄력'},
+          {name:'피부톤 보정'},
+          {name:'피부 투명'},
+          {name:'피지 조절'},
+          {name:'피지 케어'},
+          {name:'향'},
+          {name:'화이트닝'},
+          {name:'화이트헤드 케어'},
+          {name:'흡수력'},
+        ]}
+
+        var surveyPanel = this.rexUI.add.scrollablePanel({
+          x: window_width/2,
+          y: window_height/2,
+          width: window_width,
+          height: window_height*0.7,
+          scrollMode: 0,
+
+          background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, 0xffffff),
+
+          panel: {
+              child: createPanel(this, data, '설문조사'),
+              mask: {
+                  padding: 0,
+                  // layer: this.add.layer()
+              },
+          },
+    
+          // scroller: true,
+          scroller: {
+              // pointerOutRelease: false
+          },
+    
+          mouseWheelScroller: {
+              focus: false,
+              speed: 0.1
+          },
+
+          space: {
+              left: 10,
+              right: 10,
+              top: 10,
+              bottom: 10,
+              panel: 10,
+              // slider: { left: 30, right: 30 },
+          }
+        }).layout()
+        surveyPanel.visible=false
   
         circle.setStrokeStyle(2,0x868686)
         panel1.alpha = 0.7
@@ -230,20 +396,20 @@
           window.location.href = `/mainapp/room`
         })
 
-        dic.on('pointerover', function(event){
+        survey.on('pointerover', function(event){
           this.setFillStyle(0x50bcdf)
         })
-        dic.on('pointerout', function(event){
+        survey.on('pointerout', function(event){
           this.setFillStyle(0xD9D9D9)
         })
-        dic.on('pointerdown', function(event){
-          if(dic_onoff==1){
-            panel1.setX(-150)
-            dic_onoff=-1
+        survey.on('pointerdown', function(event){
+          if(survey_onoff==1){
+            surveyPanel.visible=false
+            survey_onoff=-1
           }
           else{
-            panel1.setX(window_width/2)
-            dic_onoff=1
+            surveyPanel.visible=true
+            survey_onoff=1
           }
         })
 
@@ -279,10 +445,15 @@
           }
         })
 
-        zoom.on('pointerdown', function(event){
-          
+        surveyPanel.setChildrenInteractive({
+          targets: [
+            surveyPanel.getByName('설문조사', true)
+          ]
         })
-
+          .on('child.click', function (child) {
+            child.alpha=1
+            child.children[0].fillColor = 0xa1eaff //클릭시 label색상 변경
+        })
 
         // object에서 마우스가 벗어났을때 작동하는 코드
        
