@@ -4,8 +4,8 @@
 <script src={% static 'js/window.js' %}></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
-    const COLOR_PRIMARY = 0xD7EDFF;
-    const COLOR_LIGHT = 0x20679E;
+    const COLOR_PRIMARY = 0xFFFFFF;
+    const COLOR_LIGHT = 0xDECFFA;
     const COLOR_DARK = 0x260e04;
     let itemData
     let havingitemData
@@ -110,7 +110,7 @@
             space: { left: 15, right: 10, top: 10, bottom: 10, item: 10 }
         })
             .addBackground(
-                scene.rexUI.add.roundRectangle(0, 0, 0, 0, 0, undefined).setStrokeStyle(2, COLOR_LIGHT, 1)
+                scene.rexUI.add.roundRectangle(0, 0, 2, 2, 10, undefined).setStrokeStyle(4, COLOR_LIGHT, 1)
             )
             .add(
                 title, // child
@@ -452,7 +452,7 @@
         skills = this.physics.add.staticGroup();
         ui = this.physics.add.staticGroup();
 
-    this.add.image(130,300,'bg').setScale(0.35);
+    this.add.image(130,250,'bg').setScale(0.35);
     this.add.image(110,50,'txt').setScale(0.7);
     this.add.image(window_width/2, window_height+30, 'mainline');
 
@@ -470,12 +470,12 @@
     var helmetPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
         y: window_height-170,
-        width: window_width-20,
+        width: window_width,
         height: window_height*0.05,
  
         scrollMode: 1,
  
-        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 0, COLOR_PRIMARY),
  
         panel: {
             child: createPanel(this, data, "helmet"),
@@ -507,12 +507,12 @@
     var hairPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
         y: window_height-170,
-        width: window_width-20,
+        width: window_width,
         height: window_height*0.05,
  
         scrollMode: 1,
  
-        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 0, COLOR_PRIMARY),
  
         panel: {
             child: createPanel(this, data, "hair"),
@@ -544,12 +544,12 @@
     var topPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
         y: window_height-170,
-        width: window_width-20,
+        width: window_width,
         height: window_height*0.05,
  
         scrollMode: 1,
  
-        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 0, COLOR_PRIMARY),
  
         panel: {
             child: createPanel(this, data, "top"),
@@ -581,12 +581,12 @@
     var bottomPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
         y: window_height-170,
-        width: window_width-20,
+        width: window_width,
         height: window_height*0.05,
  
         scrollMode: 1,
  
-        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 0, COLOR_PRIMARY),
  
         panel: {
             child: createPanel(this, data, "bottom"),
@@ -618,12 +618,12 @@
     var shoePanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
         y: window_height-170,
-        width: window_width-20,
+        width: window_width,
         height: window_height*0.05,
  
         scrollMode: 1,
  
-        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 0, COLOR_PRIMARY),
  
         panel: {
             child: createPanel(this, data, "shoe"),
@@ -655,12 +655,12 @@
     var weaponPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
         y: window_height-170,
-        width: window_width-20,
+        width: window_width,
         height: window_height*0.05,
  
         scrollMode: 1,
  
-        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 0, COLOR_PRIMARY),
  
         panel: {
             child: createPanel(this, data, "weapon"),
@@ -692,12 +692,12 @@
     var shieldPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
         y: window_height-170,
-        width: window_width-20,
+        width: window_width,
         height: window_height*0.05,
  
         scrollMode: 1,
  
-        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 10, COLOR_PRIMARY),
+        background: this.rexUI.add.roundRectangle(0, 0, 2, 2, 0, COLOR_PRIMARY),
  
         panel: {
             child: createPanel(this, data, "shield"),
@@ -740,20 +740,20 @@
      //BTN
      btn_x = window_width-70
      btn_y = 110
-     helmetui = btn.create(btn_x,btn_y, 'helmetui').setScale(0.5).setInteractive();
-     hairui = btn.create(btn_x,btn_y+40, 'hairui').setScale(0.5).setInteractive();
-     topui = btn.create(btn_x,btn_y+80, 'topui').setScale(0.5).setInteractive();
-     bottomui = btn.create(btn_x,btn_y+120, 'bottomui').setScale(0.5).setInteractive();
-     shoesui = btn.create(btn_x,btn_y+160, 'shoesui').setScale(0.5).setInteractive();
-     weaponui = btn.create(btn_x,btn_y+200, 'weaponui').setScale(0.5).setInteractive();
-     shieldui = btn.create(btn_x,btn_y+240, 'shieldui').setScale(0.5).setInteractive();
+     helmetui = btn.create(btn_x,btn_y, 'helmetui').setScale(0.75).setInteractive();
+     hairui = btn.create(btn_x,btn_y+40, 'hairui').setScale(0.75).setInteractive();
+     topui = btn.create(btn_x,btn_y+80, 'topui').setScale(0.75).setInteractive();
+     bottomui = btn.create(btn_x,btn_y+120, 'bottomui').setScale(0.75).setInteractive();
+     shoesui = btn.create(btn_x,btn_y+160, 'shoesui').setScale(0.75).setInteractive();
+     weaponui = btn.create(btn_x,btn_y+200, 'weaponui').setScale(0.75).setInteractive();
+     shieldui = btn.create(btn_x,btn_y+240, 'shieldui').setScale(0.75).setInteractive();
      selectui = btn.create(btn_x,btn_y+285, 'selectui').setScale(0.8).setInteractive();
      btnui = [helmetui, hairui, topui, bottomui, shoesui, weaponui, shieldui];
  
-     helmetui.setTint(0x50bcdf);
+     helmetui.setTint(0xBE9FF6);
 
      selectui.on('pointerover', function(event){
-        this.setTint(0x50bcdf)
+        this.setTint(0x5E3A9E)
     })
     selectui.on('pointerout', function(event){
         this.clearTint()
@@ -1238,7 +1238,7 @@
     
 
     selectui.on('pointerdown', function(event){
-        selectui.setTint(0x50bcdf);
+        selectui.setTint(0x5E3A9E);
             {% comment %} $.ajax({
                 url:'api/wearing/',
                 async : false,
@@ -1261,7 +1261,7 @@
     function choicetype(num){
         for(var i=0;i<btnui.length;i++){
             if (num==i){
-                btnui[i].setTint(0x50bcdf);
+                btnui[i].setTint(0xBE9FF6);
             }
             if(num!=i){
                 btnui[i].clearTint();
