@@ -163,7 +163,7 @@
 
       var survey =this.add.image(window_width*0.82, window_height*0.4, 'survey').setInteractive({cursor:'pointer'}).setScale(0.8)
       
-      var banner =this.add.image(window_width/2, window_height*0.23, 'banner').setScale(0.72)
+      var banner =this.add.image(window_width/2, window_height*0.23, 'banner').setScale(0.72).setInteractive({cursor:'pointer'})
 
       var text = this.add.image(130,25,'text').setScale(0.8)
 
@@ -348,6 +348,10 @@
         button.on('pointerdown', function(event){
           surveyPanel.visible=false
           button.visible=false
+        })
+
+        banner.on('pointerdown', function(event){
+          window.location.href=`https://rootree.co.kr`
         })
 
         sound_on.on('pointerdown', function(event){
