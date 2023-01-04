@@ -4,8 +4,8 @@
 <script src={% static 'js/window.js' %}></script>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script>
-    const COLOR_PRIMARY = 0xF5F5F5;
-    const COLOR_LIGHT = 0xD0CCCC;
+    const COLOR_PRIMARY = 0xD7EDFF;
+    const COLOR_LIGHT = 0x20679E;
     const COLOR_DARK = 0x260e04;
     let itemData
     let havingitemData
@@ -419,7 +419,7 @@
 
 
       //UI
-    this.load.image('back', "{% static '/resource/ui/back2.png'%}");
+    this.load.image('txt', "{% static '/resource/ui/character/Character txt.png'%}");
     this.load.image('helmetui', "{% static '/resource/ui/character/헬멧.png'%}");
     this.load.image('hairui', "{% static '/resource/ui/character/헤어.png'%}");
     this.load.image('topui', "{% static '/resource/ui/character/상의.png'%}");
@@ -428,6 +428,12 @@
     this.load.image('weaponui', "{% static '/resource/ui/character/무기.png'%}");
     this.load.image('shieldui', "{% static '/resource/ui/character/방패.png'%}");
     this.load.image('selectui', "{% static '/resource/ui/character/확정.png'%}");
+
+    this.load.image('mainline', "{% static '/resource/ui/main/mainline.png'%}")
+    this.load.image('home', "{% static '/resource/ui/main/home.png'%}")
+    this.load.image('store', "{% static '/resource/ui/main/store.png'%}")
+    this.load.image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
+    this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
 
   }
  
@@ -447,15 +453,15 @@
         ui = this.physics.add.staticGroup();
 
     this.add.image(130,300,'bg').setScale(0.35);
-    back = this.add.image(30,30,'back').setInteractive({cursor:'pointer'});
- 
-    back.on('pointerover', function(event){
-        this.setTint(0x50bcdf)
-    })
-    back.on('pointerout', function(event){
-        this.clearTint()
-    })
-    back.on('pointerdown', function(event){
+    this.add.image(110,50,'txt').setScale(0.7);
+    this.add.image(window_width/2, window_height+30, 'mainline');
+
+    var home = this.add.image(window_width*0.17,window_height-36, 'home').setInteractive({cursor:'pointer'})
+    var analysis = this.add.image(window_width*0.4,window_height-36,'analysis').setInteractive({cursor:'pointer'})
+    var store = this.add.image(window_width*0.63,window_height-37,'store').setInteractive({cursor:'pointer'})
+    var exit = this.add.image(window_width*0.85, window_height-36, 'logout').setInteractive({cursor:'pointer'})
+
+    home.on('pointerdown', function(event){
         window.history.back()
     })
  
@@ -463,7 +469,7 @@
    
     var helmetPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
-        y: window_height-80,
+        y: window_height-170,
         width: window_width-20,
         height: window_height*0.05,
  
@@ -500,7 +506,7 @@
  
     var hairPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
-        y: window_height-80,
+        y: window_height-170,
         width: window_width-20,
         height: window_height*0.05,
  
@@ -537,7 +543,7 @@
  
     var topPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
-        y: window_height-80,
+        y: window_height-170,
         width: window_width-20,
         height: window_height*0.05,
  
@@ -574,7 +580,7 @@
  
     var bottomPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
-        y: window_height-80,
+        y: window_height-170,
         width: window_width-20,
         height: window_height*0.05,
  
@@ -611,7 +617,7 @@
  
     var shoePanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
-        y: window_height-80,
+        y: window_height-170,
         width: window_width-20,
         height: window_height*0.05,
  
@@ -648,7 +654,7 @@
  
     var weaponPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
-        y: window_height-80,
+        y: window_height-170,
         width: window_width-20,
         height: window_height*0.05,
  
@@ -685,7 +691,7 @@
  
     var shieldPanel = this.rexUI.add.scrollablePanel({
         x: window_width/2,
-        y: window_height-80,
+        y: window_height-170,
         width: window_width-20,
         height: window_height*0.05,
  
@@ -733,21 +739,32 @@
  
      //BTN
      btn_x = window_width-70
-     helmetui = btn.create(btn_x,150, 'helmetui').setScale(0.5).setInteractive();
-     hairui = btn.create(btn_x,190, 'hairui').setScale(0.5).setInteractive();
-     topui = btn.create(btn_x,230, 'topui').setScale(0.5).setInteractive();
-     bottomui = btn.create(btn_x,270, 'bottomui').setScale(0.5).setInteractive();
-     shoesui = btn.create(btn_x,310, 'shoesui').setScale(0.5).setInteractive();
-     weaponui = btn.create(btn_x,350, 'weaponui').setScale(0.5).setInteractive();
-     shieldui = btn.create(btn_x,390, 'shieldui').setScale(0.5).setInteractive();
-     selectui = btn.create(btn_x,450, 'selectui').setScale(0.9).setInteractive();
+     btn_y = 110
+     helmetui = btn.create(btn_x,btn_y, 'helmetui').setScale(0.5).setInteractive();
+     hairui = btn.create(btn_x,btn_y+40, 'hairui').setScale(0.5).setInteractive();
+     topui = btn.create(btn_x,btn_y+80, 'topui').setScale(0.5).setInteractive();
+     bottomui = btn.create(btn_x,btn_y+120, 'bottomui').setScale(0.5).setInteractive();
+     shoesui = btn.create(btn_x,btn_y+160, 'shoesui').setScale(0.5).setInteractive();
+     weaponui = btn.create(btn_x,btn_y+200, 'weaponui').setScale(0.5).setInteractive();
+     shieldui = btn.create(btn_x,btn_y+240, 'shieldui').setScale(0.5).setInteractive();
+     selectui = btn.create(btn_x,btn_y+285, 'selectui').setScale(0.8).setInteractive();
      btnui = [helmetui, hairui, topui, bottomui, shoesui, weaponui, shieldui];
  
      helmetui.setTint(0x50bcdf);
+
+     selectui.on('pointerover', function(event){
+        this.setTint(0x50bcdf)
+    })
+    selectui.on('pointerout', function(event){
+        this.clearTint()
+    })
+    selectui.on('pointerdown', function(event){
+        window.location.href = `/mainapp/main`
+    })
  
       //player
       x = 105;
-      y = 300;
+      y = 250;
       arm_b1 = this.add.sprite(x+8, y+12, 'arm_b1').setScale(0.5); //왼팔 위
       arm_b3b = this.add.sprite(x+40, y+45, 'arm_b3b').setScale(0.5); //왼손 뒤
       weapon = this.add.sprite(x+80, y-5, 'weapon').setScale(0.5); //무기
