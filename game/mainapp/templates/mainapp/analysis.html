@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {%load static%}
 {% block script %}
-
-<script src="{% static 'js/window.js' %}"></script> 
+<script src={% static 'js/window.js' %}></script>
 <script>
 
     function preload(){
@@ -31,7 +30,6 @@
         this.add.text(53, 60, '현재 회원님의 안면 근육 나이는 ' + face_age + '세 입니다', {color:'black', font:'450 14px Arial'})
 
         // 얼굴 이미지
-        face = this.physics.add.staticGroup();
         test_face = this.add.image(188, 334, 'face').setScale(0.60).setInteractive({cursor:'pointer'})
     
         // 뒤로가기 버튼
@@ -43,14 +41,13 @@
             this.clearTint()
         })
         back.on('pointerdown', function(event){
-            location.replace('http://localhost:8000/mainapp/main')
+            window.history.back()
         })
 
         // 눈, 코, 입 ui
-        ui = this.physics.add.staticGroup();
-        eyeui = ui.create(95,570, 'eyeui').setScale(0.35).setInteractive();
-        noseui = ui.create(187,570, 'noseui').setScale(0.35).setInteractive();
-        mouthui = ui.create(280,570, 'mouthui').setScale(0.35).setInteractive();
+        eyeui = this.add.image(95,570, 'eyeui').setScale(0.35).setInteractive();
+        noseui = this.add.image(187,570, 'noseui').setScale(0.35).setInteractive();
+        mouthui = this.add.image(280,570, 'mouthui').setScale(0.35).setInteractive();
         typeui = [eyeui, noseui, mouthui];
         this.input.on('gameobjectdown', function(pointer, gameObject){
             if(gameObject==eyeui){choicetype(eyeui, typeui)}
@@ -149,23 +146,14 @@
         type: Phaser.AUTO,
         width: window_width,
         height: window_height,
-        physics: {
-            default: 'arcade',
-            arcade: {
-                debug: false,
-                gravity: {
-                    y: 0
-                }
-            }
-        },
-        backgroundColor: '#ffffff',
+        backgroundColor:'#ffffff',
         scene: {
           preload: preload,
           create: create,
           update:update,
         },
         scale: {
-            mode: Phaser.Scale.ScaleModes.FIT,
+            mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
         },
         pixelArt: false,

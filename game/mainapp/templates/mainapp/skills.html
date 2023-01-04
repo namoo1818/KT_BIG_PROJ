@@ -1,8 +1,14 @@
 {% extends "base.html" %}
 {%load static%}
-{% block script %} 
+{% block script %}
+<script src={% static 'js/window.js' %}></script>
 <script>
     function preload(){
+        this.load.scenePlugin({
+            key: 'rexuiplugin',
+            url: 'https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexuiplugin.min.js',
+            sceneKey: 'rexUI'
+        })
 
         //skills
         this.load.image('skill1', "{% static '/resource/ui/skills/skills/skill1.png'%}")
@@ -14,8 +20,6 @@
 
         //ui
         this.load.image('back', "{% static '/resource/ui/back2.png'%}")
-        this.load.image('background', "{% static '/resource/ui/background.jpg'%}")
-        this.load.image('bg2', "{% static '/resource/ui/bg2.png'%}")
         this.load.image('eyeui', "{% static '/resource/ui/skills/ui/눈.png'%}")
         this.load.image('noseui', "{% static '/resource/ui/skills/ui/코.png'%}")
         this.load.image('mouthui', "{% static '/resource/ui/skills/ui/입.png'%}")
@@ -25,11 +29,7 @@
 
     function create(){
 
-        skills = this.physics.add.staticGroup();
-        ui = this.physics.add.staticGroup();
-        
-        this.add.image(150,300,'background');
-        this.add.image(150,300,'bg2').setScale(0.35);
+        this.add.rectangle(window_width/2, window_height*0.4, window_width*0.8, window_height*0.65, 0xD9D9D9)
         back = this.add.image(30,30,'back').setInteractive({cursor:'pointer'});
         back.on('pointerover', function(event){
             this.setTint(0x50bcdf)
@@ -38,33 +38,38 @@
             this.clearTint()
         })
         back.on('pointerdown', function(event){
-            location.replace('http://localhost:8000/mainapp/main')
+            window.history.back()
         })
 
-        confirm = this.add.image(150,190,'confirm').setScale(0.60).setInteractive({cursor:'pointer'});
-        confirm.visible = false
+        //confirm = this.add.image(150,190,'confirm').setScale(0.60).setInteractive({cursor:'pointer'});
+        //confirm.visible = false
 
         //ui
-        eyeui = ui.create(65,520, 'eyeui').setScale(0.35).setInteractive();
-        noseui = ui.create(150,520, 'noseui').setScale(0.35).setInteractive();
-        mouthui = ui.create(235,520, 'mouthui').setScale(0.35).setInteractive();
+        eyeui = this.add.image(window_width/4*1,window_height*0.83, 'eyeui').setScale(0.35).setInteractive();
+        noseui = this.add.image(window_width/2,window_height*0.83, 'noseui').setScale(0.35).setInteractive();
+        mouthui = this.add.image(window_width/4*3,window_height*0.83, 'mouthui').setScale(0.35).setInteractive();
         typeui = [eyeui, noseui, mouthui];
 
         //skills
-        skill1 = skills.create(80,350, 'skill1').setScale(0.7).setInteractive();
-        skill2 = skills.create(150,350, 'skill2').setScale(0.7).setInteractive();
-        skill3 = skills.create(220,350, 'skill3').setScale(0.7).setInteractive();
-        skill4 = skills.create(80,430, 'skill4').setScale(0.7).setInteractive();
-        skill5 = skills.create(150,430, 'skill5').setScale(0.7).setInteractive();
-        skill6 = skills.create(220,430, 'skill6').setScale(0.7).setInteractive();
+        skill1 = this.add.image(window_width*0.3,350, 'skill1').setScale(0.7).setInteractive();
+        skill2 = this.add.image(window_width*0.5,350, 'skill2').setScale(0.7).setInteractive();
+        skill3 = this.add.image(window_width*0.7,350, 'skill3').setScale(0.7).setInteractive();
+        skill4 = this.add.image(window_width*0.3,430, 'skill4').setScale(0.7).setInteractive();
+        skill5 = this.add.image(window_width*0.5,430, 'skill5').setScale(0.7).setInteractive();
+        skill6 = this.add.image(window_width*0.7,430, 'skill6').setScale(0.7).setInteractive();
         s = [skill1, skill2, skill3, skill4, skill5, skill6];
 
-        skill1_rect = this.add.image(80, 350, 'Rect').setScale(0.9);
-        skill2_rect = this.add.image(150, 350, 'Rect').setScale(0.9);
-        skill3_rect = this.add.image(220, 350, 'Rect').setScale(0.9);
-        skill4_rect = this.add.image(80, 430, 'Rect').setScale(0.9);
-        skill5_rect = this.add.image(150, 430, 'Rect').setScale(0.9);
-        skill6_rect = this.add.image(220, 430, 'Rect').setScale(0.9);
+        skill1_rect = this.add.image(window_width*0.3, 350, 'Rect').setScale(0.9);
+        skill2_rect = this.add.image(window_width*0.5, 350, 'Rect').setScale(0.9);
+        skill3_rect = this.add.image(window_width*0.7, 350, 'Rect').setScale(0.9);
+        skill4_rect = this.add.image(window_width*0.3, 430, 'Rect').setScale(0.9);
+        skill5_rect = this.add.image(window_width*0.5, 430, 'Rect').setScale(0.9);
+        skill6_rect = this.add.image(window_width*0.7, 430, 'Rect').setScale(0.9);
+
+        confirm = this.rexUI.add.roundRectangle(window_width/2,window_height*0.25,150,70,7,0xed2b45).setInteractive({cursor:'pointer'})
+        confirmText = this.add.text(window_width*0.45,window_height*0.24, "확정", {color:'white', font:'450 20px Arial'})
+        confirm.visible=false
+        confirmText.visible=false
 
         skill1_rect.visible = false
         skill2_rect.visible = false
@@ -121,6 +126,7 @@
                 console.log('선택완료');
 
                 confirm.visible = true
+                confirmText.visible=true
                 confirm.on('pointerover', function(event){
                     this.setTint(0x50bcdf)
                 })
@@ -128,10 +134,11 @@
                     this.clearTint()
                 })
                 confirm.on('pointerdown', function(event){
-                    location.replace('http://localhost:8000/mainapp/main')
+                    window.location.href = `/mainapp/main`
                 })
             } else {
                 confirm.visible = false
+                confirmText.visible=false
             }
 
         })
@@ -156,30 +163,25 @@
     function update(){
     }
 
- 
-    var config = {
+    let config = {
         type: Phaser.AUTO,
-        width: 300,
-        height: 600,
-        physics: {
-            default: 'arcade',
-            arcade: {
-                debug: false,
-                gravity: {
-                    y: 0
-                }
-            }
-        },
-        backgroundColor: '#2d2d2d',
+        width: window_width,
+        height: window_height,
+        backgroundColor:'#ffffff',
         scene: {
           preload: preload,
           create: create,
           update:update,
         },
         scale: {
-            mode: Phaser.Scale.ScaleModes.FIT
-        }
+            mode: Phaser.Scale.FIT,
+            autoCenter: Phaser.Scale.CENTER_BOTH,
+        },
+        pixelArt: false,
+        render:{
+          antialias: true
+        },
       }
-      var game =  new Phaser.Game(config)
+      let game =  new Phaser.Game(config)
 </script>
 {% endblock script %}
