@@ -104,8 +104,13 @@
             sceneKey: 'rexUI'
         })
         this.load.audio('store_music', "{% static '/resource/bgm/store_music.mp3'%}")
-        this.load.image('back', "{% static '/resource/ui/back2.png'%}")
         this.load.image('count', "{% static '/resource/ui/store/count2.png'%}")
+
+        this.load.image('mainline', "{% static '/resource/ui/main/mainline.png'%}")
+        this.load.image('home', "{% static '/resource/ui/main/home.png'%}")
+        this.load.image('store', "{% static '/resource/ui/main/store.png'%}")
+        this.load.image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
+        this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
 
         await fetch('http://localhost:8000/mainapp/api/shop')
             .then(res=>res.json())
@@ -158,7 +163,6 @@
     async function create(){
         this.bgm = this.sound.add("store_music", {loop:true, volume:0.1})
         this.bgm.play()
-        var back = this.add.image(30,30,'back').setInteractive({cursor:'pointer'})
         this.add.image(window_width/2+(window_width*0.04),40,'count').setInteractive({cursor:'pointer'})
 
         var hairButton = this.add.rectangle(window_width/6,85,50,30,0xD0CCCC).setInteractive({cursor:'pointer'})
@@ -171,6 +175,28 @@
         this.add.text(window_width/6*4-(window_width*0.045), 77, '신발', {color:'black', font:'16px Arial'})
         var weaponButton = this.add.rectangle(window_width/6*5,85,50,30,0xD0CCCC).setInteractive({cursor:'pointer'})
         this.add.text(window_width/6*5-(window_width*0.045), 77, '무기', {color:'black', font:'16px Arial'})
+
+        this.add.image(window_width/2, window_height+30, 'mainline')
+        var home = this.add.image(window_width*0.17,window_height-36, 'home').setInteractive({cursor:'pointer'})
+        var analysis = this.add.image(window_width*0.4,window_height-36,'analysis').setInteractive({cursor:'pointer'})
+        var store = this.add.image(window_width*0.63,window_height-37,'store').setInteractive({cursor:'pointer'})
+        var exit = this.add.image(window_width*0.85, window_height-36, 'logout').setInteractive({cursor:'pointer'})
+
+        home.on('pointerdown', function(event){
+            window.location.href = `/mainapp/main`
+        })
+  
+        store.on('pointerdown', function(event){
+            window.location.href = `/mainapp/store`
+        })
+
+        analysis.on('pointerdown', function(event){
+            window.location.href = `/mainapp/analysis`
+        })
+
+        exit.on('pointerdown', function(event){
+            window.location.href = `/accounts/logout`
+        })
 
         this.money = this.add.text(
           window_width/2-(window_width*0.09),
@@ -197,16 +223,6 @@
         else if(localStorage.getItem('bgm')=='false'){
             game.sound.mute = true
         }
-
-        back.on('pointerover', function(event){
-            this.setTint(0x50bcdf)
-        })
-        back.on('pointerout', function(event){
-            this.clearTint()
-        })
-        back.on('pointerdown', function(event){
-            window.history.back()
-        })
 
         var hairPanel = this.rexUI.add.scrollablePanel({
             x: window_width/2,
