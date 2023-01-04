@@ -49,6 +49,22 @@
         recsys.on('pointerdown', function(event){
             window.location.href = `/mainapp/recsys`
         })
+
+        home.on('pointerdown', function(event){
+            window.location.href = `/mainapp/main`
+        })
+  
+        store.on('pointerdown', function(event){
+            window.location.href = `/mainapp/store`
+        })
+
+        analysis.on('pointerdown', function(event){
+            window.location.href = `/mainapp/analysis`
+        })
+
+        exit.on('pointerdown', function(event){
+            window.location.href = `/accounts/logout`
+        })
     }
 
     function update(){

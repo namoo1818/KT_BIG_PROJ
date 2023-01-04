@@ -8,8 +8,6 @@
     const COLOR_DARK = 0x260e04;
     let achieveData;
     let achieveUser;
-    let survey_onoff = -1; // survey panel을 관리하기위한 전역변수
-    let setting_onoff = -1
     let name
     let profile
 
@@ -118,6 +116,7 @@
       this.load.image('sound_on', "{% static '/resource/ui/main/musicOn.png'%}")
       this.load.image('sound_off', "{% static '/resource/ui/main/musicOff.png'%}")
       this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
+      this.load.image('confirm', "{% static '/resource/ui/main/confirm.png'%}")
 
       this.load.audio('title_music', "{% static '/resource/bgm/title_music.mp3'%}")
 
@@ -239,7 +238,7 @@
           x: window_width/2,
           y: window_height/2,
           width: window_width,
-          height: window_height*0.7,
+          height: window_height*0.75,
           scrollMode: 0,
 
           background: this.rexUI.add.roundRectangle(0, 0, 0, 0, 0, 0xffffff),
@@ -266,7 +265,7 @@
               left: 10,
               right: 10,
               top: 10,
-              bottom: 10,
+              bottom: 70,
               panel: 10,
               // slider: { left: 30, right: 30 },
           }
@@ -293,6 +292,8 @@
           sound_on.visible = false
         }
 
+        var button = this.add.image(window_width/2,window_height*0.8,'confirm').setInteractive({cursor:'pointer'})
+        button.visible=false
         // username을 DB에서 fetch를 통해 불러온다.
         this.username = this.add.text(
           90,
@@ -340,14 +341,13 @@
         })
 
         survey.on('pointerdown', function(event){
-          if(survey_onoff==1){
-            surveyPanel.visible=false
-            survey_onoff=-1
-          }
-          else{
-            surveyPanel.visible=true
-            survey_onoff=1
-          }
+          surveyPanel.visible=true
+          button.visible=true
+        })
+
+        button.on('pointerdown', function(event){
+          surveyPanel.visible=false
+          button.visible=false
         })
 
         sound_on.on('pointerdown', function(event){
