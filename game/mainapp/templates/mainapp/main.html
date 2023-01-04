@@ -103,12 +103,21 @@
 
       // resource load
       this.load.image('panel', "{% static '/resource/ui/background.jpg'%}")
-      this.load.image('sound_on', "{% static '/resource/ui/main/musicOn.png'%}")
-      this.load.image('sound_off', "{% static '/resource/ui/main/musicOff.png'%}")
       this.load.image('exit', "{% static '/resource/ui/exitLeft.png'%}")
       this.load.image('zoom', "{% static '/resource/ui/zoom.png'%}")
-      this.load.image('pveStart', "{% static '/resource/ui/main/pve.png'%}")
-      this.load.image('pvpStart', "{% static '/resource/ui/main/pvp.png'%}")
+      this.load.image('start', "{% static '/resource/ui/main/start.png'%}")
+      this.load.image('mainline', "{% static '/resource/ui/main/mainline.png'%}")
+      this.load.image('home', "{% static '/resource/ui/main/home.png'%}")
+      this.load.image('survey', "{% static '/resource/ui/main/survey.png'%}")
+      this.load.image('chr', "{% static '/resource/ui/main/character.png'%}")
+      this.load.image('banner', "{% static '/resource/ui/main/banner.png'%}")
+      this.load.image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
+      this.load.image('skills', "{% static '/resource/ui/main/skills.png'%}")
+      this.load.image('store', "{% static '/resource/ui/main/store.png'%}")
+      this.load.image('text', "{% static '/resource/ui/main/text.png'%}")
+      this.load.image('sound_on', "{% static '/resource/ui/main/musicOn.png'%}")
+      this.load.image('sound_off', "{% static '/resource/ui/main/musicOff.png'%}")
+      this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
 
       this.load.audio('title_music', "{% static '/resource/bgm/title_music.mp3'%}")
 
@@ -125,11 +134,7 @@
     
     async function create(){ 
       this.bgm = this.sound.play("title_music", {loop:true})
-      var setting = this.add.image(35,35,'profile_image').setInteractive({cursor:'pointer'})
-      let circle = this.add.circle(35,35,25)
-      var exit = this.add.image(window_width-30, 75, 'exit').setInteractive({cursor:'pointer'})
-
-      var canvas = this.add.rexCanvas(35, 35, 50, 50).fill('black');
+      var canvas = this.add.rexCanvas(50, 65, 50, 50).fill('black');
       canvas.fitTo = (function (parent) {
           var newSize = FitTo(this, parent, true);
           this.setDisplaySize(newSize.width, newSize.height);
@@ -138,43 +143,36 @@
 
       // 각종 UI 배치
 
-      var chr = this.rexUI.add.roundRectangle(window_width/2,130,210,100,7,0xD9D9D9).setInteractive({cursor:'pointer'})
-      this.add.text(window_width/2-(window_width*0.09), 120, '캐릭터', {color:'black', font:'450 20px Arial'})
+      var setting = this.add.image(50,65,'profile_image').setInteractive({cursor:'pointer'})
+      let circle = this.add.circle(50,65,25)
 
-      var survey = this.rexUI.add.roundRectangle(60,window_height-40,70,43,7,0xD9D9D9).setInteractive({cursor:'pointer'})
-      this.add.text(32, window_height-47, '설문조사', {color:'black', font:'450 14px Arial'})
+      this.add.image(window_width/2, window_height+30, 'mainline')
 
-      var start = this.add.circle(window_width-70,window_height-70,50,50, 0x54717a).setInteractive({cursor:'pointer'})
-      this.add.text(window_width-113, window_height-80, '게임 시작', {color:'black', font:'450 20px Arial'})
+      var home = this.add.image(window_width*0.17,window_height-36, 'home').setInteractive({cursor:'pointer'})
 
-      var store = this.add.circle(window_width-45,window_height-170,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
-      this.add.text(window_width-60, window_height-180, '상점', {color:'black', font:'450 16px Arial'})
+      var analysis = this.add.image(window_width*0.4,window_height-36,'analysis').setInteractive({cursor:'pointer'})
 
-      var skills = this.add.circle(window_width-140,window_height-140,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
-      this.add.text(window_width-155, window_height-150, '스킬', {color:'black', font:'450 16px Arial'})
+      var store = this.add.image(window_width*0.63,window_height-37,'store').setInteractive({cursor:'pointer'})
 
-      var analysis = this.add.circle(window_width-170,window_height-45,35,35,0xD9D9D9).setInteractive({cursor:'pointer'})
-      this.add.text(window_width-185, window_height-55, '분석', {color:'black', font:'450 16px Arial'})
+      var exit = this.add.image(window_width*0.85, window_height-36, 'logout').setInteractive({cursor:'pointer'})
 
-      var namespace = this.rexUI.add.roundRectangle(window_width/2,30,170,40,3,0xB8DEEA)
+      var chr = this.add.image(window_width*0.35,window_height-170,'chr').setInteractive({cursor:'pointer'})
 
-      let sound_off = this.add.image(window_width-30,30,'sound_off').setInteractive({cursor:'pointer'})
-      let sound_on = this.add.image(window_width-30,30,'sound_on').setInteractive({cursor:'pointer'})
-      let panel1 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
-      let panel2 = this.add.image(-150,300,'panel').setScale(0.7).setInteractive({cursor:'pointer'})
+      var start = this.add.image(window_width*0.35,window_height/2,'start').setInteractive({cursor:'pointer'})
 
-      var settingPanel = this.rexUI.add.roundRectangle(-150,90,150,50,7,0xffffff).setStrokeStyle(1, 0x4f4f4f).setInteractive({cursor:'pointer'})
-      var zoom = this.add.image(-150,90,'zoom').setScale(0.9).setInteractive({cursor:'pointer'})
-      var zoomText = this.add.text(-150,81,'사진 업로드',{color:'black', font:'450 16px Arial'})
+      var skills = this.add.image(window_width*0.82,window_height*0.6,'skills').setInteractive({cursor:'pointer'})
 
-      var pveStart = this.add.image(window_width-70,window_height-97, 'pveStart').setInteractive({cursor:'pointer'})
-      var pveText = this.add.text(window_width-85,window_height-97, 'PVE', {color:'black', font:'450 16px Arial'})
-      var pvpStart = this.add.image(window_width-69,window_height-43, 'pvpStart').setInteractive({cursor:'pointer'})
-      var pvpText = this.add.text(window_width-85,window_height-58, 'PVP', {color:'black', font:'450 16px Arial'})
-      var line = this.add.line(window_width-70,window_height-67, 0, 0, 100, 0, 0xffffff)
+      var survey =this.add.image(window_width*0.82, window_height*0.4, 'survey').setInteractive({cursor:'pointer'}).setScale(0.8)
+      
+      var banner =this.add.image(window_width/2, window_height*0.23, 'banner').setScale(0.72)
+
+      var text = this.add.image(130,25,'text').setScale(0.8)
+
+      let sound_off = this.add.image(window_width-29,30,'sound_off').setInteractive({cursor:'pointer'}).setScale(0.4)
+      let sound_on = this.add.image(window_width-30,32,'sound_on').setInteractive({cursor:'pointer'}).setScale(0.4)
 
       var scene = this
-      zoom
+      setting
         .on('pointerdown', function () {
             scene.plugins.get('rexfilechooserplugin').open({ accept: 'image/*', multiple:false })
                 .then(function (result) {
@@ -184,18 +182,10 @@
                         canvas.loadFromURLPromise(url)
                           .then(function () {
                             URL.revokeObjectURL(url);
-                            canvas.fitTo(zoom)
-                            setting.visible=false
+                            canvas.fitTo(setting)
                         })
                     }
                 })
-        })
-
-        settingPanel.on('pointerdown', function(event){
-          settingPanel.setX(-150)
-          zoom.setX(-150)
-          zoomText.setX(-150)
-          setting_onoff=-1
         })
 
         var data = {설문조사:[
@@ -284,14 +274,6 @@
         surveyPanel.visible=false
   
         circle.setStrokeStyle(2,0x868686)
-        panel1.alpha = 0.7
-        panel2.alpha = 0.7
-
-        pveStart.visible=false
-        pvpStart.visible=false
-        pveText.visible=false
-        pvpText.visible=false
-        line.visible=false
         
         // 새로고침, 페이지 이동, 재접속 등 환경이 변경되었을때 bgm의 상태를 유지하기 위하여 localstorage에 상태를 저장
         if(localStorage.getItem('bgm')==null){ 
@@ -313,12 +295,12 @@
 
         // username을 DB에서 fetch를 통해 불러온다.
         this.username = this.add.text(
-          window_width/2-(window_width*0.045),
-          20,
+          90,
+          53,
           name,
           {
             color:'black',
-            font:'550 20px Poppins',
+            font:'550 23px Poppins',
           }
         )
         await fetch('http://localhost:8000/core/api/achievement')
@@ -333,75 +315,30 @@
 
         // 각 UI 이벤트 할당
 
-        store.on('pointerover', function(event){
-          this.setFillStyle(0x50bcdf)
+        home.on('pointerdown', function(event){
+          window.location.href = `/mainapp/main`
         })
-        store.on('pointerout', function(event){
-          this.setFillStyle(0xD9D9D9)
-        })
+
         store.on('pointerdown', function(event){
           window.location.href = `/mainapp/store`
         })
 
-        skills.on('pointerover', function(event){
-          this.setFillStyle(0x50bcdf)
-        })
-        skills.on('pointerout', function(event){
-          this.setFillStyle(0xD9D9D9)
-        })
         skills.on('pointerdown', function(event){
           window.location.href = `/mainapp/skills`
         })
 
-        analysis.on('pointerover', function(event){
-          this.setFillStyle(0x50bcdf)
-        })
-        analysis.on('pointerout', function(event){
-          this.setFillStyle(0xD9D9D9)
-        })
         analysis.on('pointerdown', function(event){
           window.location.href = `/mainapp/analysis`
         })
         
-        chr.on('pointerover', function(event){
-          this.setFillStyle(0x50bcdf)
-        })
-        chr.on('pointerout', function(event){
-          this.setFillStyle(0xD9D9D9)
-        })
         chr.on('pointerdown', function(event){
           window.location.href = `/mainapp/character`
         })
 
-        start.on('pointerover', function(event){
-          this.setFillStyle(0x50bcdf)
-        })
-        start.on('pointerout', function(event){
-          this.setFillStyle(0xD9D9D9)
-        })
         start.on('pointerdown', function(event){
-          start.visible=false
-          pveStart.visible=true
-          pvpStart.visible=true
-          pveText.visible=true
-          pvpText.visible=true
-          line.visible=true
-        })
-
-        pveStart.on('pointerdown', function(event){
-          window.location.href = `/core/battle`
-        })
-
-        pvpStart.on('pointerdown', function(event){
           window.location.href = `/mainapp/room`
         })
 
-        survey.on('pointerover', function(event){
-          this.setFillStyle(0x50bcdf)
-        })
-        survey.on('pointerout', function(event){
-          this.setFillStyle(0xD9D9D9)
-        })
         survey.on('pointerdown', function(event){
           if(survey_onoff==1){
             surveyPanel.visible=false
@@ -428,21 +365,6 @@
 
         exit.on('pointerdown', function(event){
           window.location.href = `/accounts/logout`
-        })
-
-        setting.on('pointerdown', function(event){
-          if(setting_onoff==1){
-            settingPanel.setX(-150)
-            zoom.setX(-150)
-            zoomText.setX(-150)
-            setting_onoff=-1
-          }
-          else{
-            settingPanel.setX(80)
-            zoom.setX(30)
-            zoomText.setX(60)
-            setting_onoff=1
-          }
         })
 
         surveyPanel.setChildrenInteractive({
@@ -506,7 +428,7 @@
             mode: Phaser.Scale.FIT,
             autoCenter: Phaser.Scale.CENTER_BOTH,
         },
-        pixelArt: false,
+        pixelArt: true,
         render:{
           antialias: true
         },
