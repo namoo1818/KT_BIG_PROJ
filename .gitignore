@@ -1,5 +1,4 @@
 .cache
-*/media
 game/**/__pycache__
 **/migrations
 **/migrations
