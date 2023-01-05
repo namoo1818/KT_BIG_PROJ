@@ -20,8 +20,9 @@
         this.load.image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
         this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
         this.load.image('background', "{% static '/resource/ui/analysis/background.png'%}")
-        this.load.image('layout', "{% static '/resource/ui/analysis/layout.png'%}")
+        this.load.image('layout', "{% static '/resource/ui/analysis/layoutA.png'%}")
         this.load.image('recsys', "{% static '/resource/ui/analysis/button.png'%}")
+        this.load.image('userImg', "{% static '/resource/ui/analysis/userImage.png'%}")
     }
 
     function create(){
@@ -41,6 +42,8 @@
         var exit = this.add.image(window_width*0.85, window_height-36, 'logout').setInteractive({cursor:'pointer'})
 
         var layout = this.add.image(window_width/2, window_height*0.73, 'layout')
+
+        this.add.image(window_width/2, window_height*0.3, 'userImg').setScale(0.7)
 
         // 추천
 

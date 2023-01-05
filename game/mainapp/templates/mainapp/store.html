@@ -15,6 +15,7 @@
     var data={hair:[], top:[], bottom:[], shoe:[], weapon:[]}
     var userID
     var userMoney
+    var childData
 
     var createPanel = function (scene, data, state) {
         var sizer = scene.rexUI.add.sizer({
@@ -111,6 +112,8 @@
         this.load.image('store', "{% static '/resource/ui/main/store.png'%}")
         this.load.image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
         this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
+
+        this.load.image('soldOut', "{% static '/resource/ui/store/soldOut.png'%}")
 
         await fetch('http://localhost:8000/mainapp/api/shop')
             .then(res=>res.json())
@@ -533,6 +536,7 @@
                         itemID = data[category][i].id
                     }
                 }
+                childData = child
                 productPanel.visible=true
                 itemText.setText('아이템명 : '+itemName)
                 payText.setText('상품 가격 : '+itemPay)
@@ -681,6 +685,7 @@
                     datatype : 'json',
                     headers: { "X-CSRFToken": "{{ csrf_token }}" },
                 })
+                childData.setTexture('soldOut')
             }
         })
    }
