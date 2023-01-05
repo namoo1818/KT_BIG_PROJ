@@ -182,6 +182,7 @@
                           .then(function () {
                             URL.revokeObjectURL(url);
                             canvas.fitTo(setting)
+                            setting.visible=false
                         })
                     }
                 })
