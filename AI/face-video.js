@@ -27,14 +27,10 @@ video.addEventListener('play', () => {
     faceapi.draw.drawDetections(canvas, resizedDetections)
     faceapi.draw.drawFaceLandmarks(canvas, resizedDetections)
     faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
-    
-    // const test3 = resizedDetections[0].landmarks._positions.map(e => e._x);
-    // const test4 = resizedDetections[0].landmarks._positions.map(r => r._y);
+
     const test3 = resizedDetections[0].landmarks._positions
-    // console.log(test3, test4)
     localStorage.car = JSON.stringify( test3 );
     var jsonData = JSON.stringify(test3);
-    // console.log( car2 );
 
     function saveAsFile(str, filename) {
       var hiddenElement = document.createElement('a');
