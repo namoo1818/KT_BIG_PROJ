@@ -99,14 +99,12 @@
             0, // proportion
             'left', // align
             0, // paddingConfig
-            true // expand
-            )
+            true)
         .add(table, // child
             1, // proportion
             'center', // align
             0, // paddingConfig
-            true // expand
-            );
+            true);
     }
     // panel에 아이콘으로 아이템 이미지를 보여주기 위함
     var createIcon = function (scene, item, iconWidth, iconHeight) {
@@ -167,12 +165,13 @@
         .load
         .image('soldOut', "{% static '/resource/ui/store/soldOut.png'%}")
 
+      // DB에서 SHOP 불러오기
       await fetch('http://localhost:8000/mainapp/api/shop')
         .then(res => res.json())
         .then((data) => {
           shopData = data
         })
-
+      // DB에서 ITEM 불러오기
       await fetch('http://localhost:8000/mainapp/api/item')
         .then(res => res.json())
         .then((data) => {
@@ -198,8 +197,8 @@
           data['weapon'].push({id: item.id, name: item.name, pay: shop.pay, img: item.images})
         }
       }
-      console.log(data)
 
+      //DB에서 불러온 이미지를 load해주는 작업
       for (i = 0; i < data.hair.length; i++) {
         this
           .load
@@ -374,13 +373,7 @@
             child: createPanel(this, data, 'hair'),
             mask: {
               padding: 0,
-              // layer: this.add.layer()
             }
-          },
-
-          // scroller: true,
-          scroller: {
-            // pointerOutRelease: false
           },
 
           mouseWheelScroller: {
@@ -394,7 +387,6 @@
             top: 10,
             bottom: 10,
             panel: 10,
-            // slider: { left: 30, right: 30 },
           }
         })
         .layout()
@@ -418,13 +410,7 @@
             child: createPanel(this, data, 'top'),
             mask: {
               padding: 0,
-              // layer: this.add.layer()
             }
-          },
-
-          // scroller: true,
-          scroller: {
-            // pointerOutRelease: false
           },
 
           mouseWheelScroller: {
@@ -438,7 +424,6 @@
             top: 10,
             bottom: 10,
             panel: 10,
-            // slider: { left: 30, right: 30 },
           }
         })
         .layout()
@@ -464,13 +449,7 @@
             child: createPanel(this, data, 'bottom'),
             mask: {
               padding: 0,
-              // layer: this.add.layer()
             }
-          },
-
-          // scroller: true,
-          scroller: {
-            // pointerOutRelease: false
           },
 
           mouseWheelScroller: {
@@ -484,7 +463,6 @@
             top: 10,
             bottom: 10,
             panel: 10,
-            // slider: { left: 30, right: 30 },
           }
         })
         .layout()
@@ -510,13 +488,7 @@
             child: createPanel(this, data, 'shoe'),
             mask: {
               padding: 0,
-              // layer: this.add.layer()
             }
-          },
-
-          // scroller: true,
-          scroller: {
-            // pointerOutRelease: false
           },
 
           mouseWheelScroller: {
@@ -530,7 +502,6 @@
             top: 10,
             bottom: 10,
             panel: 10,
-            // slider: { left: 30, right: 30 },
           }
         })
         .layout()
@@ -556,13 +527,7 @@
             child: createPanel(this, data, 'weapon'),
             mask: {
               padding: 0,
-              // layer: this.add.layer()
             }
-          },
-
-          // scroller: true,
-          scroller: {
-            // pointerOutRelease: false
           },
 
           mouseWheelScroller: {
@@ -576,7 +541,6 @@
             top: 10,
             bottom: 10,
             panel: 10,
-            // slider: { left: 30, right: 30 },
           }
         })
         .layout()

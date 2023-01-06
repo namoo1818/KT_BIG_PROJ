@@ -12,16 +12,33 @@
       this
         .load
         .image('text', "{% static '/resource/ui/analysis/text.png'%}")
-
-        this.load.image('mainline', "{% static '/resource/ui/main/mainline.png'%}")
-        this.load.image('home', "{% static '/resource/ui/main/home.png'%}")
-        this.load.image('store', "{% static '/resource/ui/main/store.png'%}")
-        this.load.image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
-        this.load.image('logout', "{% static '/resource/ui/main/logout.png'%}")
-        this.load.image('background', "{% static '/resource/ui/analysis/background.png'%}")
-        this.load.image('layout', "{% static '/resource/ui/analysis/layoutA.png'%}")
-        this.load.image('recsys', "{% static '/resource/ui/analysis/button.png'%}")
-        this.load.image('userImg', "{% static '/resource/ui/analysis/userImage2.jpg'%}")
+      this
+        .load
+        .image('mainline', "{% static '/resource/ui/main/mainline.png'%}")
+      this
+        .load
+        .image('home', "{% static '/resource/ui/main/home.png'%}")
+      this
+        .load
+        .image('store', "{% static '/resource/ui/main/store.png'%}")
+      this
+        .load
+        .image('analysis', "{% static '/resource/ui/main/analysis.png'%}")
+      this
+        .load
+        .image('logout', "{% static '/resource/ui/main/logout.png'%}")
+      this
+        .load
+        .image('background', "{% static '/resource/ui/analysis/background.png'%}")
+      this
+        .load
+        .image('layout', "{% static '/resource/ui/analysis/layoutA.png'%}")
+      this
+        .load
+        .image('recsys', "{% static '/resource/ui/analysis/button.png'%}")
+      this
+        .load
+        .image('userImg', "{% static '/resource/ui/analysis/userImage2.jpg'%}")
     }
 
     function create() {
@@ -64,7 +81,10 @@
         .add
         .image(window_width / 2, window_height * 0.73, 'layout')
 
-        this.add.image(window_width/2, window_height*0.3, 'userImg').setScale(1.0)
+      this
+        .add
+        .image(window_width / 2, window_height * 0.3, 'userImg')
+        .setScale(1.0)
 
       // 추천
 

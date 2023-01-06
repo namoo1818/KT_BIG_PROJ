@@ -6,8 +6,6 @@
     const COLOR_PRIMARY = 0xF5F5F5;
     const COLOR_LIGHT = 0xD0CCCC;
     const COLOR_DARK = 0x260e04;
-    let achieveData;
-    let achieveUser;
     let name
     let profile
 
@@ -89,14 +87,12 @@
             0, // proportion
             'left', // align
             0, // paddingConfig
-            true // expand
-            )
+            true)
         .add(table, // child
             1, // proportion
             'center', // align
             0, // paddingConfig
-            true // expand
-            );
+            true);
     }
     // panel에 아이콘으로 아이템 이미지를 보여주기 위함
     var createIcon = function (scene, item, iconWidth, iconHeight) {
@@ -194,6 +190,7 @@
         .load
         .audio('title_music', "{% static '/resource/bgm/title_music.mp3'%}")
 
+      // DB에서 유저 이름과 profile이미지를 가져오는 작업
       await fetch('http://localhost:8000/core/api/user')
         .then(res => res.json())
         .then((data) => {
@@ -319,6 +316,7 @@
           })
       })
 
+      //설문조사용 데이터 생성
       var data = {
         설문조사: [
           {
@@ -413,6 +411,7 @@
         ]
       }
 
+      //설문조사 판넬 생성
       var surveyPanel = this
         .rexUI
         .add
@@ -431,14 +430,8 @@
           panel: {
             child: createPanel(this, data, '설문조사'),
             mask: {
-              padding: 0,
-              // layer: this.add.layer()
+              padding: 0
             }
-          },
-
-          // scroller: true,
-          scroller: {
-            // pointerOutRelease: false
           },
 
           mouseWheelScroller: {
@@ -451,8 +444,7 @@
             right: 10,
             top: 10,
             bottom: 70,
-            panel: 10,
-            // slider: { left: 30, right: 30 },
+            panel: 10
           }
         })
         .layout()
@@ -485,27 +477,15 @@
         .image(window_width / 2, window_height * 0.8, 'confirm')
         .setInteractive({cursor: 'pointer'})
       button.visible = false
-      // username을 DB에서 fetch를 통해 불러온다.
+
       this.username = this
         .add
         .text(90, 53, name, {
           color: 'black',
           font: '550 23px Poppins'
         })
-      await fetch('http://localhost:8000/core/api/achievement')
-        .then(res => res.json())
-        .then((data) => {
-          achieveData = data
-        })
-
-      await fetch('http://localhost:8000/core/api/achieveuser')
-        .then(res => res.json())
-        .then((data) => {
-          achieveUser = data
-        })
 
       // 각 UI 이벤트 할당
-
       home.on('pointerdown', function (event) {
         window.location.href = `/mainapp/main`
       })
@@ -571,8 +551,6 @@
             .children[0]
             .fillColor = 0xa1eaff //클릭시 label색상 변경
         })
-
-      // object에서 마우스가 벗어났을때 작동하는 코드
 
       this
         .input
