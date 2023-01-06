@@ -665,6 +665,7 @@
 
         helmetui.setTint(0xBE9FF6);
 
+        //선택확정버튼 클릭 이벤트
         selectui.on('pointerover', function(event){
             this.setTint(0x5E3A9E)
         })
@@ -1150,28 +1151,6 @@
                     shield.setTexture('shield5')
                 }
             })
-
-        //선택확정버튼 클릭 이벤트
-        selectui.on('pointerdown', function(event){
-            selectui.setTint(0x5E3A9E);
-                {% comment %} $.ajax({
-                    url:'api/wearing/',
-                    async : false,
-                    type:'POST',
-                    data:{
-                        "userID":userID,
-                        "itemID":itemID,
-                        csrfmiddlewaretoken: '{{ csrf_token }}',
-                    },
-                    datatype : 'json',
-                    headers: { "X-CSRFToken": "{{ csrf_token }}" },
-                }) {% endcomment %}
-        })
-
-        selectui.on('pointerup', function(event){
-            selectui.clearTint()
-        })
-
 
         function choicetype(num){
             for(var i=0;i<btnui.length;i++){
