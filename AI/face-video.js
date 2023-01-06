@@ -29,17 +29,17 @@ video.addEventListener('play', () => {
     faceapi.draw.drawFaceExpressions(canvas, resizedDetections)
 
     const test3 = resizedDetections[0].landmarks._positions
-    localStorage.car = JSON.stringify( test3 );
-    var jsonData = JSON.stringify(test3);
+    localStorage.car = JSON.stringify( test3 )
+    var jsonData = JSON.stringify(test3)
 
     function saveAsFile(str, filename) {
-      var hiddenElement = document.createElement('a');
-      hiddenElement.href = 'data:attachment/text,' + encodeURI(str);
-      hiddenElement.target = '_blank';
-      hiddenElement.download = filename;
-      hiddenElement.click();
+      var hiddenElement = document.createElement('a')
+      hiddenElement.href = 'data:attachment/text,' + encodeURI(str)
+      hiddenElement.target = '_blank'
+      hiddenElement.download = filename
+      hiddenElement.click()
   }
 
-  saveAsFile(jsonData, "output.json");
+  saveAsFile(jsonData, "output.json")
   }, 100)
 })
