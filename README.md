@@ -1,5 +1,5 @@
 # Rockfit
-![rock fit](https://user-images.githubusercontent.com/50236187/211225885-247a05c5-adcf-4051-9328-8b0267a249af.png)
+![AI_2기_8조_썸네일](https://user-images.githubusercontent.com/50236187/211226137-b6c19d24-c857-4f4f-b2d9-5f341be94169.jpg)
 
 # 조원소개
 김락형, 김세은, 송원준, 유소연, 이민지, 이정연, 정지호
